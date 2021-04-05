@@ -1,10 +1,27 @@
-############# REGRESSION #############
 
-visualize_fit <- function(model, names){
+# The following visualization code draws on [Diego Usai's medium post](https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c).
+
+#' Visualize regression model outputs
+#'
+#' @param models regression model outputs
+#' @param names regression model names
+#' @return a point plot(s)
+#' @importFrom tidyr tibble
+#' @importFrom dplyr bind_cols
+#' @importFrom parsnip predict.model_fit
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 geom_abline
+#' @importFrom ggplot2 geom_point
+#' @importFrom ggplot2 labs
+#' @importFrom glue glue
+#' @importFrom tune coord_obs_pred
+#' @export
+
+viz_reg_fit <- function(models, names){
 
     # Bind ground truth and predicted values
     bind_cols(tibble(truth = test_y_reg), # Ground truth
-              predict(model, test_x_reg)) %>% # Predicted values
+              predict.model_fit(model, test_x_reg)) %>% # Predicted values
 
         # Visualize the residuals
         ggplot(aes(x = truth, y = .pred)) +
@@ -17,35 +34,22 @@ visualize_fit <- function(model, names){
 
 }
 
-# Build an evaluation function
-evaluate_reg <- function(model){
+#' Visualize classification model outputs
+#'
+#' @param models classification model outputs
+#' @param names classification model names
+#' @return a bar plot(s)
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 geom_text
+#' @importFrom ggplot2 geom_col
+#' @importFrom ggplot2 labs
+#' @importFrom ggplot2 ylim
+#' @importFrom glue glue
+#' @export
+#'
 
-    # Bind ground truth and predicted values
-    bind_cols(tibble(truth = test_y_reg), # Ground truth
-              predict(model, test_x_reg)) %>% # Predicted values
-
-        # Calculate root mean-squared error
-        metrics(truth = truth, estimate = .pred)
-}
-
-
-############# CLASSIFICATION #############
-
-evaluate_class <- function(model){
-
-    # Bind ground truth and predicted values
-    df <- bind_cols(tibble(truth = test_y_class), # Ground truth
-                    predict(model, test_x_class)) # Predicted values
-
-    # Calculate metrics
-    df %>% metrics(truth = truth, estimate = .pred_class)
-
-}
-
-# The following visualization code draws on [Diego Usai's medium post](https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c).
-
-visualize_class_eval <- function(model){
-    evaluate_class(model) %>%
+viz_class_fit <- function(model){
+    evaluate_class_fit(model) %>%
         ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
         geom_col() +
         labs(x = "Metrics",
@@ -56,23 +60,63 @@ visualize_class_eval <- function(model){
                   color = "red")
 }
 
-visualize_class_conf <- function(model){
-    bind_cols(tibble(truth = test_y_class), # Ground truth
-              predict(model, test_x_class)) %>%
-        conf_mat(truth, .pred_class) %>%
-        pluck(1) %>% # Select index
-        as_tibble() %>% # Vector -> data.frame
-        ggplot(aes(Prediction, Truth, alpha = n)) +
-        geom_tile(show.legend = FALSE) +
-        geom_text(aes(label = n),
-                  color = "red",
-                  alpha = 1,
-                  size = 13)
+#' Evaluate regression model outputs
+#
+#' @param model regression model outputs
+#' @return A dataframe of two columns (truth, estimate)
+#' @importFrom tidyr tibble
+#' @importFrom dplyr bind_cols
+#' @importFrom parsnip predict.model_fit
+#' @importFrom yardstick metrics
+#' @export
+
+evaluate_reg_fit <- function(model){
+
+    # Bind ground truth and predicted values
+    bind_cols(tibble(truth = test_y_reg), # Ground truth
+              predict.model_fit(model, test_x_reg)) %>% # Predicted values
+
+        # Calculate root mean-squared error
+        metrics(truth = truth, estimate = .pred)
 }
 
-############# Variable importance #############
+#' Evaluate classification model outputs
+#
+#' @param model classification model outputs
+#' @return A dataframe of two columns (truth, estimate)
+#' @importFrom tidyr tibble
+#' @importFrom dplyr bind_cols
+#' @importFrom parsnip predict.model_fit
+#' @importFrom yardstick metrics
+#' @export
+
+evaluate_class_fit <- function(model){
+
+    # Bind ground truth and predicted values
+    df <- bind_cols(tibble(truth = test_y_class), # Ground truth
+                    predict.model_fit(model, test_x_class)) # Predicted values
+
+    # Calculate metrics
+    df %>% metrics(truth = truth, estimate = .pred_class)
+
+}
 
 # The following function is adapted from https://juliasilge.com/blog/animal-crossing/
+
+#' Visualize the importance of top 20 features
+#
+#' @param df model outputs
+#' @return A bar plot
+#' @importFrom dplyr top_n
+#' @importFrom dplyr ungroup
+#' @importFrom dplyr mutate
+#' @importFrom stringr str_remove
+#' @importFrom forcats fct_reorder
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_col
+#' @importFrom ggplot2 theme
+#' @importFrom ggplot2 labs
+#' @export
 
 topn_vip <- function(df) {
     df %>%
@@ -86,48 +130,7 @@ topn_vip <- function(df) {
             Variable = fct_reorder(Variable, Importance)
         ) %>%
         ggplot(aes(x = Importance, y = Variable)) +
-        geom_col(show.legend = FALSE) +
-        labs(y = NULL) +
-        theme(text = element_text(size = 20))
-}
-
-vi_plot_else <- function(fit, title) {
-
-    pos <- pull_workflow_fit(fit) %>%
-        vi() %>%
-        filter(Importance > 0) %>%
-        topn_vip() +
-        labs(title = title,
-             subtitle = "Positive")
-
-    nev <- pull_workflow_fit(fit) %>%
-        vi() %>%
-        filter(Importance < 0) %>%
-        topn_vip() +
-        labs(subtitle = "Negative")
-
-    out <- pos + nev
-
-    return(out)
-}
-
-vi_plot_lasso <- function(fit, title) {
-
-    pos <- pull_workflow_fit(fit) %>%
-        vi() %>%
-        filter(Sign == "POS") %>%
-        topn_vip() +
-        labs(title = title,
-             subtitle = "Positive")
-
-    nev <- pull_workflow_fit(fit) %>%
-        vi() %>%
-        filter(Sign != "POS") %>%
-        topn_vip() +
-        labs(subtitle = "Negative")
-
-    out <- pos + nev
-
-    return(out)
-
+            geom_col(show.legend = FALSE) +
+            labs(y = NULL) +
+            theme(text = element_text(size = 20))
 }
