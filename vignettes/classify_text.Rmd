@@ -16,4 +16,35 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(autotextclassifier)
+library(recipes)
 ```
+
+# Data munging 
+
+Don't forget to make sure that the type of the outcome variable is factor.
+
+```{r eval = FALSE}
+sample_data <- autotextclassifier::sample_data
+
+sample_data$category <- as.factor(sample_data$category)
+```
+
+# Apply basic recipe 
+
+The following information is provided by the `rec` object.
+
+> Training data contained 232 data points and no missing data.
+
+> Operations:
+
+> Tokenization for text [trained]
+Stop word removal for text [trained]
+Text filtering for text [trained]
+Term frequency-inverse document frequency with text [trained]
+
+```{r eval = FALSE}
+rec_obj <- recipe(category ~ text, data = sample_data)
+
+rec <- apply_basic_recipe(rec_obj, text)
+```
+

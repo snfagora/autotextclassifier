@@ -231,6 +231,7 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 #' @param lasso_wf A lasso workflow (including the search space for the model)
 #' @param rand_wf A random forest workflow (including the search space for the model)
 #' @param xg_wf An XGBoost workflow (including the search space for the model)
+#' @param metric_choice The selected metrics for the model evaluation among accuracy, precision, recall, F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.
 #' @return A list output that contains the best model output for lasso, random forest, and XGBoost.
 # tune tune_grid
 #' @importFrom tune control_grid
@@ -238,9 +239,9 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 #' @importFrom yardstick metric_set
 #' @export
 
-select_best <- function(lasso_wf, rand_wf, xg_wf){
+select_best <- function(lasso_wf, rand_wf, xg_wf, metric_choice = "accuracy"){
 
-  metrics <- metric_set(accuracy, precision, recall, f_meas)
+  metrics <- metric_set(accuracy, precision, recall, f_meas, roc_auc)
 
   # Lasso
   lasso_res <- lasso_wf %>%
@@ -268,9 +269,9 @@ select_best <- function(lasso_wf, rand_wf, xg_wf){
       metrics = metrics
     )
 
-  best_lasso <- select_best(lasso_res, metric = "accuracy")
-  best_rand <- select_best(rand_res, metric = "accuracy")
-  best_xg <- select_best(xg_res, metric = "accuracy")
+  best_lasso <- select_best(lasso_res, metric = metric_choice)
+  best_rand <- select_best(rand_res, metric = metric_choice)
+  best_xg <- select_best(xg_res, metric = metric_choice)
 
   out <- list(best_lasso, best_rand, best_xg)
 
