@@ -93,7 +93,7 @@ c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec
 class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 ```
 
-# Select best model from each algorithm
+# Find the best model from each algorithm
 
 This part is most time-consuming.
 
@@ -118,9 +118,10 @@ c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_models(lasso_wf, best_lasso, rand_w
 # Evaluate the model using visualization
 
 ```{r eval = FALSE}
-viz_class_eval(lasso_fit, "Lasso")/
-viz_class_eval(rand_fit, "Random forest")/
-viz_class_eval(xg_fit, "XGBoost")
+lasso_fit
+viz_class_fit(lasso_fit, "Lasso")/
+viz_class_fit(rand_fit, "Random forest")/
+viz_class_fit(xg_fit, "XGBoost")
 ```
 
 

@@ -36,7 +36,6 @@ viz_class_fit <- function(model, model_title){
 #' @return A dataframe of two columns (truth, estimate)
 #' @importFrom tidyr tibble
 #' @importFrom dplyr bind_cols
-#' @importFrom parsnip predict.model_fit
 #' @importFrom yardstick metrics
 #' @export
 
@@ -44,7 +43,7 @@ evaluate_class_fit <- function(model){
 
     # Bind ground truth and predicted values
     out <- bind_cols(tibble(truth = test_y_class), # Ground truth
-                    predict.model_fit(model, test_x_class)) # Predicted values
+                    predict(model, test_x_class)) # Predicted values
 
     # Calculate metrics
     out %>% metrics(truth = truth, estimate = .pred_class)
