@@ -2,18 +2,22 @@
 % Please edit documentation in R/utils.r
 \name{viz_class_fit}
 \alias{viz_class_fit}
-\title{Visualize classification model outputs}
+\title{Visualize a classification model output}
 \usage{
-viz_class_fit(model)
+viz_class_fit(model, model_title, test_x_class, test_y_class)
 }
 \arguments{
-\item{model}{classification model outputs}
+\item{model}{A classification model output}
 
-\item{names}{classification model names}
+\item{model_title}{A classification model name}
+
+\item{test_x_class}{Outcomes of the test dataset}
+
+\item{test_y_class}{Predictors of the test dataset}
 }
 \value{
 a bar plot(s)
 }
 \description{
-Visualize classification model outputs
+Visualize a classification model output
 }

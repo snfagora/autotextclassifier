@@ -2,20 +2,20 @@
 % Please edit documentation in R/utils.r
 \name{evaluate_class_fit}
 \alias{evaluate_class_fit}
-\title{Evaluate classification model outputs}
+\title{Evaluate a classification model output}
 \usage{
-evaluate_class_fit(model)
+evaluate_class_fit(model, test_x_class, test_y_class)
 }
 \arguments{
-\item{model}{classification model outputs}
-
-\item{test_y_class}{Predictors of the test dataset}
+\item{model}{A classification model output}
 
 \item{test_x_class}{Outcomes of the test dataset}
+
+\item{test_y_class}{Predictors of the test dataset}
 }
 \value{
 A dataframe of two columns (truth, estimate)
 }
 \description{
-Evaluate classification model outputs
+Evaluate a classification model output
 }

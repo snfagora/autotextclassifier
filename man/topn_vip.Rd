@@ -7,7 +7,7 @@
 topn_vip(model)
 }
 \arguments{
-\item{model_outputs}{model outputs}
+\item{model}{model outputs}
 }
 \value{
 A bar plot

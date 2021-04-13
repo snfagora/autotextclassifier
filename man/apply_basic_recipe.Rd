@@ -4,12 +4,14 @@
 \alias{apply_basic_recipe}
 \title{Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.}
 \usage{
-apply_basic_recipe(recipe, text, token_ratio = 1000)
+apply_basic_recipe(recipe, text, token_threshold = 1000)
 }
 \arguments{
 \item{recipe}{A recipe object. e.g., recipe(documents, output ~ predictors)}
 
 \item{text}{The name of the text field in the data.}
+
+\item{token_threshold}{The maximum number of the tokens will be used in the classification.}
 }
 \value{
 A prep object.

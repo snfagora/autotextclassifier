@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r eval = FALSE}
 library(autotextclassifier)
 devtools::load_all() # Load updated functions 
 
@@ -28,7 +28,7 @@ library(zeallot)
 
 # Import data 
 
-```{r}
+```{r eval = FALSE}
 load(file = here("inst/extdata/sample_data.rda"))
 ```
 
@@ -71,7 +71,7 @@ c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% data_obj
 
 # Create tuning parameters 
 
-```{r}
+```{r eval = FALSE}
 c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
 ```
 
@@ -118,10 +118,9 @@ c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_models(lasso_wf, best_lasso, rand_w
 # Evaluate the model using visualization
 
 ```{r eval = FALSE}
-lasso_fit
-viz_class_fit(lasso_fit, "Lasso")/
-viz_class_fit(rand_fit, "Random forest")/
-viz_class_fit(xg_fit, "XGBoost")
+viz_class_fit(lasso_fit, "Lasso", test_x_class, test_y_class) + 
+viz_class_fit(rand_fit, "Random forest", test_x_class, test_y_class) +
+viz_class_fit(xg_fit, "XGBoost", test_x_class, test_y_class)
 ```
 
 

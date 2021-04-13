@@ -1,1 +1,1 @@
-utils::globalVariables(c(".estimate", ".pred", ".pred_class", "Importance", "Variable", "accuracy", "class_folds", "element_text", "f_meas", "lambda_grid", "lasso_spec", "model", "precision", "rand_grid", "rec_articles", "recall", "truth", "tune_grid", "xg_grid", "roc_auc"))
+utils::globalVariables(c(".estimate", ".pred", ".pred_class", "Importance", "Variable", "class_folds", "element_text", "lambda_grid", "lasso_spec", "model", "rand_grid", "rec_articles", "truth", "tune_grid", "xg_grid", "test_x_class", "test_y_class"))

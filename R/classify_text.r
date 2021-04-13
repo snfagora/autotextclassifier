@@ -3,6 +3,7 @@
 #'
 #' @param recipe A recipe object. e.g., recipe(documents, output ~ predictors)
 #' @param text The name of the text field in the data.
+#' @param token_threshold The maximum number of the tokens will be used in the classification.
 #' @return A prep object.
 #' @importFrom recipes recipe
 #' @importFrom recipes prep
@@ -12,7 +13,7 @@
 #' @importFrom textrecipes step_tfidf
 #' @export
 
-apply_basic_recipe <- function(recipe, text, token_ratio = 1000){
+apply_basic_recipe <- function(recipe, text, token_threshold = 1000){
 
   recipe %>%
     # Used bigrams
@@ -20,7 +21,7 @@ apply_basic_recipe <- function(recipe, text, token_ratio = 1000){
     # Removed stopwords
     step_stopwords(text) %>%
     # Filtered tokens
-    step_tokenfilter(text, max_tokens = token_ratio) %>%
+    step_tokenfilter(text, max_tokens = token_threshold) %>%
     # Normalized document length
     step_tfidf(text) %>%
     prep()
@@ -161,7 +162,7 @@ create_tunes <- function(mode = "classification") {
 #' @importFrom dials finalize
 #' @export
 
-create_search_spaces <- function(train_x_class, category, lasso_sepc, rand_spec, xg_spec) {
+create_search_spaces <- function(train_x_class, category, lasso_spec, rand_spec, xg_spec) {
 
   lasso_grid <- grid_regular(penalty(), levels = 50)
 
@@ -258,8 +259,7 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 #' @importFrom tune select_best
 #' @importFrom yardstick metric_set
 #' @importFrom yardstick accuracy
-#' @importFrom yardstick precision
-#' @importFrom yardstick recall
+#' @importFrom yardstick bal_accuracy
 #' @importFrom yardstick f_meas
 #' @importFrom yardstick roc_auc
 #' @export
@@ -268,7 +268,7 @@ find_best_model <- function(lasso_wf, rand_wf, xg_wf,
                         class_folds, lasso_grid, rand_grid, xg_grid,
                         metric_choice = "accuracy"){
 
-  metrics <- metric_set(accuracy, precision, recall, f_meas, roc_auc)
+  metrics <- metric_set(accuracy, bal_accuracy, f_meas, roc_auc)
 
   # Lasso
   lasso_res <- lasso_wf %>%

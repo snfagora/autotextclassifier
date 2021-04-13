@@ -1,10 +1,12 @@
 
 # The following visualization code draws on [Diego Usai's medium post](https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c).
 
-#' Visualize classification model outputs
+#' Visualize a classification model output
 #'
-#' @param model classification model outputs
-#' @param names classification model names
+#' @param model A classification model output
+#' @param model_title A classification model name
+#' @param test_y_class Predictors of the test dataset
+#' @param test_x_class Outcomes of the test dataset
 #' @return a bar plot(s)
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_text
@@ -15,8 +17,8 @@
 #' @export
 #'
 
-viz_class_fit <- function(model, model_title){
-    evaluate_class_fit(model) %>%
+viz_class_fit <- function(model, model_title, test_x_class, test_y_class){
+    evaluate_class_fit(model, test_x_class, test_y_class) %>%
         ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
         geom_col() +
         labs(x = "Metrics",
@@ -28,22 +30,23 @@ viz_class_fit <- function(model, model_title){
         labs(title = model_title)
 }
 
-#' Evaluate classification model outputs
+#' Evaluate a classification model output
 #
-#' @param model classification model outputs
+#' @param model A classification model output
 #' @param test_y_class Predictors of the test dataset
 #' @param test_x_class Outcomes of the test dataset
 #' @return A dataframe of two columns (truth, estimate)
 #' @importFrom tidyr tibble
 #' @importFrom dplyr bind_cols
 #' @importFrom yardstick metrics
+#' @importFrom stats predict
 #' @export
 
-evaluate_class_fit <- function(model){
+evaluate_class_fit <- function(model, test_x_class, test_y_class){
 
     # Bind ground truth and predicted values
     out <- bind_cols(tibble(truth = test_y_class), # Ground truth
-                    predict(model, test_x_class)) # Predicted values
+                     predict(model, test_x_class)) # Predicted values
 
     # Calculate metrics
     out %>% metrics(truth = truth, estimate = .pred_class)
@@ -54,7 +57,7 @@ evaluate_class_fit <- function(model){
 
 #' Visualize the importance of top 20 features
 #
-#' @param model_outputs model outputs
+#' @param model model outputs
 #' @return A bar plot
 #' @importFrom dplyr top_n
 #' @importFrom dplyr ungroup

@@ -4,18 +4,18 @@
 \alias{create_search_spaces}
 \title{Create search spaces for the algorithms based on the hyperparameters}
 \usage{
-create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
+create_search_spaces(train_x_class, category, lasso_spec, rand_spec, xg_spec)
 }
 \arguments{
 \item{train_x_class}{Training data for predictors}
 
 \item{category}{The target binary category}
 
+\item{lasso_spec}{The tuning parameters for lasso}
+
 \item{rand_spec}{The tuning parameters for random forest}
 
 \item{xg_spec}{The tuning parameters for XGBoost}
-
-\item{lasso_spec}{The tuning parameters for lasso}
 }
 \value{
 A list of the search spaces for lasso, random forest, and XGBoost.
