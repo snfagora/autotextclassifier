@@ -95,7 +95,7 @@ class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 
 # Select best model from each algorithm
 
-This part is most time consuming.
+This part is most time-consuming.
 
 ```{r eval = FALSE}
 all_cores <- parallel::detectCores(logical = FALSE)
