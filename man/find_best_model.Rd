@@ -30,7 +30,7 @@ find_best_model(
 
 \item{xg_grid}{The search space for XGBoost}
 
-\item{metric_choice}{The selected metrics for the model evaluation among accuracy, precision, recall, F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.}
+\item{metric_choice}{The selected metrics for the model evaluation among accuracy, balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.}
 }
 \value{
 A list output that contains the best model output for lasso, random forest, and XGBoost.

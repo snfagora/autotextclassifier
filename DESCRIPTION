@@ -1,5 +1,5 @@
 Package: autotextclassifier
-Title: R package for classifying texts using a binary category
+Title: R package for automatically classifying texts using a binary category
 Version: 0.0.1
 Authors@R: 
     c(person(given = "Jae Yeon",

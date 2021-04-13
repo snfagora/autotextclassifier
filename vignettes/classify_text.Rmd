@@ -1,5 +1,5 @@
 ---
-title: "classify_text"
+title: "Basic workflow"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{classify_text}
@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Load libraries 
+
 ```{r eval = FALSE}
 library(autotextclassifier)
 devtools::load_all() # Load updated functions 
@@ -26,24 +28,24 @@ library(recipes)
 library(zeallot)
 ```
 
-# Import data 
+## Import data 
 
 ```{r eval = FALSE}
 load(file = here("inst/extdata/sample_data.rda"))
 ```
 
-# Data munging 
+## Data munging 
 
-Don't forget to make sure that the type of the outcome variable is factor.
+Don't forget to make sure that the type of the outcome variable should be factor.
 
 ```{r eval = FALSE}
 names(sample_data) <- c("category", "org_name", "ein", "text")
 sample_data$category <- as.factor(sample_data$category)
 ```
 
-# Apply basic recipe 
+## Apply basic recipe 
 
-The following information is provided by the `rec` object.
+The `rec` object provides the following information.
 
 > Training data contained 232 data points and no missing data.
 
@@ -59,7 +61,7 @@ rec_obj <- recipe(category ~ text, data = sample_data)
 rec <- apply_basic_recipe(rec_obj, text)
 ```
 
-# Split data 
+## Split data 
 
 ```{r eval = FALSE}
 set.seed(1234)
@@ -69,31 +71,31 @@ data_obj <- split_using_srs(data = sample_data, category = category, rec = rec)
 c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% data_obj
 ```
 
-# Create tuning parameters 
+## Create tuning parameters 
 
 ```{r eval = FALSE}
 c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
 ```
 
-# Create search spaces 
+## Create search spaces 
 
 ```{r eval = FALSE}
 c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
 ```
 
-# Create workflows 
+## Create workflows 
 
 ```{r eval = FALSE}
 c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec, category)
 ```
 
-# Create 10-fold cross-validation samples 
+## Create 10-fold cross-validation samples 
 
 ```{r eval = FALSE}
 class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 ```
 
-# Find the best model from each algorithm
+## Find the best model from each algorithm
 
 This part is most time-consuming.
 
@@ -109,20 +111,16 @@ registerDoParallel(cl)
 c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid)
 ```
 
-# Fit the best model from each algorithm to the data 
+## Fit the best model from each algorithm to the data 
 
 ```{r eval = FALSE}
 c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_models(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
 ```
 
-# Evaluate the model using visualization
+## Evaluate the model using visualization
 
 ```{r eval = FALSE}
 viz_class_fit(lasso_fit, "Lasso", test_x_class, test_y_class) + 
 viz_class_fit(rand_fit, "Random forest", test_x_class, test_y_class) +
 viz_class_fit(xg_fit, "XGBoost", test_x_class, test_y_class)
 ```
-
-
-
-

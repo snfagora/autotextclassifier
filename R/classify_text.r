@@ -71,8 +71,10 @@ split_using_srs <- function(data, category, prop_ratio = 0.8, rec) {
   test_y_class <- bake(rec, raw_test_class, all_outcomes())$category %>% as.factor()
 
   # Putting together
-  out <- list(train_x_class, test_x_class,
-              train_y_class, test_y_class)
+  out <- list("train_x_class" = train_x_class,
+              "test_x_class" = test_x_class,
+              "train_y_class" = train_y_class,
+              "test_y_class" = test_y_class)
 
   return(out)
 
@@ -135,7 +137,9 @@ create_tunes <- function(mode = "classification") {
   ) %>%
     set_engine("xgboost")
 
-  out <- list(lasso_spec, rand_spec, xg_spec)
+  out <- list("lasso_spec" = lasso_spec,
+              "rand_spec" = rand_spec,
+              "xg_spec" = xg_spec)
 
   return(out)
 
@@ -181,7 +185,9 @@ create_search_spaces <- function(train_x_class, category, lasso_spec, rand_spec,
     size = 30
   )
 
-  out <- list(lasso_grid, rand_grid, xg_grid)
+  out <- list("lasso_grid" = lasso_grid,
+              "rand_grid" = rand_grid,
+              "xg_grid" = xg_grid)
 
   return(out)
 }
@@ -213,7 +219,9 @@ create_workflows <- function(lasso_spec, rand_spec, xg_spec, category) {
   xg_wf <- lasso_wf %>%
     update_model(xg_spec)
 
-  out <- list(lasso_wf, rand_wf, xg_wf)
+  out <- list("lasso_wf" = lasso_wf,
+              "rand_wf" = rand_wf,
+              "xg_wf" = xg_wf)
 
   return(out)
 
@@ -252,7 +260,7 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 #' @param lasso_grid The search spaces for lasso
 #' @param rand_grid The search spaces for random forest
 #' @param xg_grid The search space for XGBoost
-#' @param metric_choice The selected metrics for the model evaluation among accuracy, precision, recall, F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.
+#' @param metric_choice The selected metrics for the model evaluation among accuracy, balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.
 #' @return A list output that contains the best model output for lasso, random forest, and XGBoost.
 #' @importFrom tune tune_grid
 #' @importFrom tune control_grid
@@ -300,7 +308,9 @@ find_best_model <- function(lasso_wf, rand_wf, xg_wf,
   best_rand <- select_best(rand_res, metric = metric_choice)
   best_xg <- select_best(xg_res, metric = metric_choice)
 
-  out <- list(best_lasso, best_rand, best_xg)
+  out <- list("best_lasso" = best_lasso,
+              "best_rand" = best_rand,
+              "best_xg" = best_xg)
 
   return(out)
 }
@@ -352,7 +362,9 @@ fit_best_models <- function(lasso_wf, best_lasso,
   xg_fit <- xg_wf %>%
     fit(train_x_class %>% bind_cols(tibble(category = train_y_class)))
 
-  out <- list(lasso_fit, rand_fit, xg_fit)
+  out <- list("lasso_fit" = lasso_fit,
+              "rand_fit" = rand_fit,
+              "xg_fit" = xg_fit)
 
   return(out)
 
