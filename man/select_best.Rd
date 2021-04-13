@@ -9,7 +9,7 @@ select_best(
   rand_wf,
   xg_wf,
   class_folds,
-  labmda_grid,
+  lasso_grid,
   rand_grid,
   xg_grid,
   metric_choice = "accuracy"
@@ -24,13 +24,13 @@ select_best(
 
 \item{class_folds}{10-fold cross-validation samples}
 
+\item{lasso_grid}{The search spaces for lasso}
+
 \item{rand_grid}{The search spaces for random forest}
 
 \item{xg_grid}{The search space for XGBoost}
 
 \item{metric_choice}{The selected metrics for the model evaluation among accuracy, precision, recall, F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.}
-
-\item{lasso_grid}{The search spaces for lasso}
 }
 \value{
 A list output that contains the best model output for lasso, random forest, and XGBoost.

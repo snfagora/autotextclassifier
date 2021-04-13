@@ -1,42 +1,9 @@
 
 # The following visualization code draws on [Diego Usai's medium post](https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c).
 
-#' Visualize regression model outputs
-#'
-#' @param models regression model outputs
-#' @param names regression model names
-#' @return a point plot(s)
-#' @importFrom tidyr tibble
-#' @importFrom dplyr bind_cols
-#' @importFrom parsnip predict.model_fit
-#' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 geom_abline
-#' @importFrom ggplot2 geom_point
-#' @importFrom ggplot2 labs
-#' @importFrom glue glue
-#' @importFrom tune coord_obs_pred
-#' @export
-
-viz_reg_fit <- function(models, names){
-
-    # Bind ground truth and predicted values
-    bind_cols(tibble(truth = test_y_reg), # Ground truth
-              predict.model_fit(model, test_x_reg)) %>% # Predicted values
-
-        # Visualize the residuals
-        ggplot(aes(x = truth, y = .pred)) +
-        # Diagonal line
-        geom_abline(lty = 2) +
-        geom_point(alpha = 0.5) +
-        # Make X- and Y- scale uniform
-        coord_obs_pred() +
-        labs(title = glue::glue("{names}"))
-
-}
-
 #' Visualize classification model outputs
 #'
-#' @param models classification model outputs
+#' @param model classification model outputs
 #' @param names classification model names
 #' @return a bar plot(s)
 #' @importFrom ggplot2 ggplot
@@ -48,7 +15,7 @@ viz_reg_fit <- function(models, names){
 #' @export
 #'
 
-viz_class_fit <- function(model){
+viz_class_fit <- function(model, model_title){
     evaluate_class_fit(model) %>%
         ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
         geom_col() +
@@ -57,32 +24,15 @@ viz_class_fit <- function(model){
         ylim(c(0,1)) +
         geom_text(aes(label = round(.estimate, 2)),
                   size = 10,
-                  color = "red")
-}
-
-#' Evaluate regression model outputs
-#
-#' @param model regression model outputs
-#' @return A dataframe of two columns (truth, estimate)
-#' @importFrom tidyr tibble
-#' @importFrom dplyr bind_cols
-#' @importFrom parsnip predict.model_fit
-#' @importFrom yardstick metrics
-#' @export
-
-evaluate_reg_fit <- function(model){
-
-    # Bind ground truth and predicted values
-    bind_cols(tibble(truth = test_y_reg), # Ground truth
-              predict.model_fit(model, test_x_reg)) %>% # Predicted values
-
-        # Calculate root mean-squared error
-        metrics(truth = truth, estimate = .pred)
+                  color = "red") +
+        labs(title = model_title)
 }
 
 #' Evaluate classification model outputs
 #
 #' @param model classification model outputs
+#' @param test_y_class Predictors of the test dataset
+#' @param test_x_class Outcomes of the test dataset
 #' @return A dataframe of two columns (truth, estimate)
 #' @importFrom tidyr tibble
 #' @importFrom dplyr bind_cols
@@ -93,11 +43,11 @@ evaluate_reg_fit <- function(model){
 evaluate_class_fit <- function(model){
 
     # Bind ground truth and predicted values
-    df <- bind_cols(tibble(truth = test_y_class), # Ground truth
+    out <- bind_cols(tibble(truth = test_y_class), # Ground truth
                     predict.model_fit(model, test_x_class)) # Predicted values
 
     # Calculate metrics
-    df %>% metrics(truth = truth, estimate = .pred_class)
+    out %>% metrics(truth = truth, estimate = .pred_class)
 
 }
 
@@ -105,7 +55,7 @@ evaluate_class_fit <- function(model){
 
 #' Visualize the importance of top 20 features
 #
-#' @param df model outputs
+#' @param model_outputs model outputs
 #' @return A bar plot
 #' @importFrom dplyr top_n
 #' @importFrom dplyr ungroup
@@ -118,8 +68,8 @@ evaluate_class_fit <- function(model){
 #' @importFrom ggplot2 labs
 #' @export
 
-topn_vip <- function(df) {
-    df %>%
+topn_vip <- function(model) {
+    model %>%
         top_n(20, wt = abs(Importance)) %>%
         ungroup() %>%
         mutate(

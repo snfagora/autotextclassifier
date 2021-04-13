@@ -9,7 +9,7 @@ create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
 \arguments{
 \item{train_x_class}{Training data for predictors}
 
-\item{category}{The target binary category.}
+\item{category}{The target binary category}
 
 \item{rand_spec}{The tuning parameters for random forest}
 
@@ -18,7 +18,7 @@ create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
 \item{lasso_spec}{The tuning parameters for lasso}
 }
 \value{
-A list of the workflows that include the search spaces for lasso, random forest, and XGBoost.
+A list of the search spaces for lasso, random forest, and XGBoost.
 }
 \description{
 Create search spaces for the algorithms based on the hyperparameters

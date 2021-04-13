@@ -7,7 +7,7 @@
 viz_class_fit(model)
 }
 \arguments{
-\item{models}{classification model outputs}
+\item{model}{classification model outputs}
 
 \item{names}{classification model names}
 }

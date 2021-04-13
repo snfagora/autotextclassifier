@@ -4,10 +4,10 @@
 \alias{topn_vip}
 \title{Visualize the importance of top 20 features}
 \usage{
-topn_vip(df)
+topn_vip(model)
 }
 \arguments{
-\item{df}{model outputs}
+\item{model_outputs}{model outputs}
 }
 \value{
 A bar plot

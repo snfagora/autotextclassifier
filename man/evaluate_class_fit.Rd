@@ -8,6 +8,10 @@ evaluate_class_fit(model)
 }
 \arguments{
 \item{model}{classification model outputs}
+
+\item{test_y_class}{Predictors of the test dataset}
+
+\item{test_x_class}{Outcomes of the test dataset}
 }
 \value{
 A dataframe of two columns (truth, estimate)

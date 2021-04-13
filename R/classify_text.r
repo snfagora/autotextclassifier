@@ -143,7 +143,7 @@ create_tunes <- function(mode = "classification") {
 #' Create search spaces for the algorithms based on the hyperparameters
 #'
 #' @param train_x_class Training data for predictors
-#' @param category The target binary category.
+#' @param category The target binary category
 #' @param lasso_spec The tuning parameters for lasso
 #' @param rand_spec The tuning parameters for random forest
 #' @param xg_spec The tuning parameters for XGBoost
@@ -187,10 +187,10 @@ create_search_spaces <- function(train_x_class, category, lasso_sepc, rand_spec,
 
 #' Create workflows for the algorithms based on the hyperparameters
 #'
-#' @param lasso_spec
-#' @param rand_spec
-#' @param xg_spec
-#' @param category
+#' @param lasso_spec The model specification for lasso
+#' @param rand_spec The model specification for random forest
+#' @param xg_spec The model specification for XGBoost
+#' @param category The target binary category
 #' @return A list of the workflows for lasso, random forest, and XGBoost.
 #' @importFrom workflows workflow
 #' @importFrom workflows add_model
@@ -242,7 +242,7 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 
 }
 
-#' Select the best output for each algorithm based on the hyperparameters and 10-fold cross-validation.
+#' Find the best version of each algorithm based on the hyperparameters and 10-fold cross-validation.
 #'
 #' @param lasso_wf A lasso workflow (including the search space for the model)
 #' @param rand_wf A random forest workflow (including the search space for the model)
@@ -264,13 +264,9 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 #' @importFrom yardstick roc_auc
 #' @export
 
-select_best <- function(lasso_wf, rand_wf, xg_wf,
+find_best_model <- function(lasso_wf, rand_wf, xg_wf,
                         class_folds, lasso_grid, rand_grid, xg_grid,
                         metric_choice = "accuracy"){
-
-  if (require(!yardstick)) install.packages("yardstick")
-
-  library(yardstick)
 
   metrics <- metric_set(accuracy, precision, recall, f_meas, roc_auc)
 

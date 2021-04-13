@@ -16,7 +16,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(autotextclassifier)
+devtools::load_all() # Load updated functions 
+
+library(parallel)
+library(doParallel)
 library(here)
+library(patchwork)
 library(recipes)
 library(zeallot)
 ```
@@ -33,7 +38,6 @@ Don't forget to make sure that the type of the outcome variable is factor.
 
 ```{r eval = FALSE}
 names(sample_data) <- c("category", "org_name", "ein", "text")
-
 sample_data$category <- as.factor(sample_data$category)
 ```
 
@@ -52,7 +56,6 @@ Term frequency-inverse document frequency with text [trained]
 
 ```{r eval = FALSE}
 rec_obj <- recipe(category ~ text, data = sample_data)
-
 rec <- apply_basic_recipe(rec_obj, text)
 ```
 
@@ -74,20 +77,52 @@ c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
 
 # Create search spaces 
 
+```{r eval = FALSE}
+c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
+```
+
 # Create workflows 
+
+```{r eval = FALSE}
+c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec, category)
+```
 
 # Create 10-fold cross-validation samples 
 
-```{r}
+```{r eval = FALSE}
 class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 ```
 
-# Select best model 
+# Select best model from each algorithm
 
-```{r}
-best_model <- select_best(lasso_wf, rand_wf, xg_wf,
-                        class_folds, lasso_grid, rand_grid, xg_grid)
+This part is most time consuming.
+
+```{r eval = FALSE}
+all_cores <- parallel::detectCores(logical = FALSE)
+
+cl <- makeCluster(all_cores[1] - 1)
+
+registerDoParallel(cl)
 ```
+
+```{r eval = FALSE}
+c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid)
+```
+
+# Fit the best model from each algorithm to the data 
+
+```{r eval = FALSE}
+c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_models(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
+```
+
+# Evaluate the model using visualization
+
+```{r eval = FALSE}
+viz_class_eval(lasso_fit, "Lasso")/
+viz_class_eval(rand_fit, "Random forest")/
+viz_class_eval(xg_fit, "XGBoost")
+```
+
 
 
 
