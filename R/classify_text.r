@@ -27,11 +27,12 @@ apply_basic_recipe <- function(recipe, text, token_ratio = 1000){
 
 }
 
-#' Split data using stratified random sampling (SRS).
+#' Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps
 #'
 #' @param data The data to be trained and tested.
 #' @param category The target binary category.
 #' @param prop_ratio The ratio used to split the data. The default value is 0.8
+#' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
 #' @return A list output that contains train_x_class, test_x_class, train_y_class, test_y_class.
 #' @importFrom rsample initial_split
 #' @importFrom dplyr mutate
@@ -42,7 +43,7 @@ apply_basic_recipe <- function(recipe, text, token_ratio = 1000){
 #' @importFrom recipes all_outcomes
 #' @export
 
-split_using_srs <- function(data, category, prop_ratio = 0.8) {
+split_using_srs <- function(data, category, prop_ratio = 0.8, rec) {
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
@@ -57,16 +58,16 @@ split_using_srs <- function(data, category, prop_ratio = 0.8) {
   raw_test_class <- testing(split_class)
 
   # x features (predictors)
-  train_x_class <- bake(rec_articles,
+  train_x_class <- bake(rec,
                         raw_train_class, all_predictors())
-  test_x_class <- bake(rec_articles,
+  test_x_class <- bake(rec,
                        raw_test_class, all_predictors())
 
   # y outcomes (outcomes)
-  train_y_class <- bake(rec_articles,
+  train_y_class <- bake(rec,
                         raw_train_class, all_outcomes())$category %>% as.factor()
 
-  test_y_class <- bake(rec_articles, raw_test_class, all_outcomes())$category %>% as.factor()
+  test_y_class <- bake(rec, raw_test_class, all_outcomes())$category %>% as.factor()
 
   # Putting together
   out <- list(train_x_class, test_x_class,
@@ -146,7 +147,7 @@ create_tunes <- function(mode = "classification") {
 #' @param lasso_spec The tuning parameters for lasso
 #' @param rand_spec The tuning parameters for random forest
 #' @param xg_spec The tuning parameters for XGBoost
-#' @return A list of the workflows that include the search spaces for lasso, random forest, and XGBoost.
+#' @return A list of the search spaces for lasso, random forest, and XGBoost.
 #' @importFrom dials grid_regular
 #' @importFrom dials penalty
 #' @importFrom dials mtry
@@ -158,15 +159,11 @@ create_tunes <- function(mode = "classification") {
 #' @importFrom dials loss_reduction
 #' @importFrom dials sample_prop
 #' @importFrom dials finalize
-#' @importFrom workflows workflow
-#' @importFrom workflows add_model
-#' @importFrom workflows add_formula
-#' @importFrom workflows update_model
 #' @export
 
 create_search_spaces <- function(train_x_class, category, lasso_sepc, rand_spec, xg_spec) {
 
-  lambda_grid <- grid_regular(penalty(), levels = 50)
+  lasso_grid <- grid_regular(penalty(), levels = 50)
 
   rand_grid <- grid_regular(mtry(range = c(1, 10)),
                             min_n(range = c(2, 10)),
@@ -183,6 +180,25 @@ create_search_spaces <- function(train_x_class, category, lasso_sepc, rand_spec,
     size = 30
   )
 
+  out <- list(lasso_grid, rand_grid, xg_grid)
+
+  return(out)
+}
+
+#' Create workflows for the algorithms based on the hyperparameters
+#'
+#' @param lasso_spec
+#' @param rand_spec
+#' @param xg_spec
+#' @param category
+#' @return A list of the workflows for lasso, random forest, and XGBoost.
+#' @importFrom workflows workflow
+#' @importFrom workflows add_model
+#' @importFrom workflows add_formula
+#' @importFrom workflows update_model
+#' @export
+
+create_workflows <- function(lasso_spec, rand_spec, xg_spec, category) {
   # Lasso
   lasso_wf <- workflow() %>%
     add_model(lasso_spec) %>%
@@ -231,15 +247,30 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 #' @param lasso_wf A lasso workflow (including the search space for the model)
 #' @param rand_wf A random forest workflow (including the search space for the model)
 #' @param xg_wf An XGBoost workflow (including the search space for the model)
+#' @param class_folds 10-fold cross-validation samples
+#' @param lasso_grid The search spaces for lasso
+#' @param rand_grid The search spaces for random forest
+#' @param xg_grid The search space for XGBoost
 #' @param metric_choice The selected metrics for the model evaluation among accuracy, precision, recall, F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.
 #' @return A list output that contains the best model output for lasso, random forest, and XGBoost.
-# tune tune_grid
+#' @importFrom tune tune_grid
 #' @importFrom tune control_grid
 #' @importFrom tune select_best
 #' @importFrom yardstick metric_set
+#' @importFrom yardstick accuracy
+#' @importFrom yardstick precision
+#' @importFrom yardstick recall
+#' @importFrom yardstick f_meas
+#' @importFrom yardstick roc_auc
 #' @export
 
-select_best <- function(lasso_wf, rand_wf, xg_wf, metric_choice = "accuracy"){
+select_best <- function(lasso_wf, rand_wf, xg_wf,
+                        class_folds, lasso_grid, rand_grid, xg_grid,
+                        metric_choice = "accuracy"){
+
+  if (require(!yardstick)) install.packages("yardstick")
+
+  library(yardstick)
 
   metrics <- metric_set(accuracy, precision, recall, f_meas, roc_auc)
 
@@ -247,7 +278,7 @@ select_best <- function(lasso_wf, rand_wf, xg_wf, metric_choice = "accuracy"){
   lasso_res <- lasso_wf %>%
     tune_grid(
       resamples = class_folds,
-      grid = lambda_grid,
+      grid = lasso_grid,
       metrics = metrics
     )
 

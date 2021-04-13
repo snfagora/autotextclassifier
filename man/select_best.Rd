@@ -4,7 +4,16 @@
 \alias{select_best}
 \title{Select the best output for each algorithm based on the hyperparameters and 10-fold cross-validation.}
 \usage{
-select_best(lasso_wf, rand_wf, xg_wf, metric_choice = "accuracy")
+select_best(
+  lasso_wf,
+  rand_wf,
+  xg_wf,
+  class_folds,
+  labmda_grid,
+  rand_grid,
+  xg_grid,
+  metric_choice = "accuracy"
+)
 }
 \arguments{
 \item{lasso_wf}{A lasso workflow (including the search space for the model)}
@@ -13,7 +22,15 @@ select_best(lasso_wf, rand_wf, xg_wf, metric_choice = "accuracy")
 
 \item{xg_wf}{An XGBoost workflow (including the search space for the model)}
 
+\item{class_folds}{10-fold cross-validation samples}
+
+\item{rand_grid}{The search spaces for random forest}
+
+\item{xg_grid}{The search space for XGBoost}
+
 \item{metric_choice}{The selected metrics for the model evaluation among accuracy, precision, recall, F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.}
+
+\item{lasso_grid}{The search spaces for lasso}
 }
 \value{
 A list output that contains the best model output for lasso, random forest, and XGBoost.

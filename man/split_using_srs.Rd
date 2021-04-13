@@ -2,9 +2,9 @@
 % Please edit documentation in R/classify_text.r
 \name{split_using_srs}
 \alias{split_using_srs}
-\title{Split data using stratified random sampling (SRS).}
+\title{Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps}
 \usage{
-split_using_srs(data, category, prop_ratio = 0.8)
+split_using_srs(data, category, prop_ratio = 0.8, rec)
 }
 \arguments{
 \item{data}{The data to be trained and tested.}
@@ -12,10 +12,12 @@ split_using_srs(data, category, prop_ratio = 0.8)
 \item{category}{The target binary category.}
 
 \item{prop_ratio}{The ratio used to split the data. The default value is 0.8}
+
+\item{rec}{The recipe (preprocessing steps) that will be applied to the training and test data}
 }
 \value{
 A list output that contains train_x_class, test_x_class, train_y_class, test_y_class.
 }
 \description{
-Split data using stratified random sampling (SRS).
+Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps
 }

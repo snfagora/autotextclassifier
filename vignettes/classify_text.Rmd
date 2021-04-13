@@ -16,7 +16,15 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(autotextclassifier)
+library(here)
 library(recipes)
+library(zeallot)
+```
+
+# Import data 
+
+```{r}
+load(file = here("inst/extdata/sample_data.rda"))
 ```
 
 # Data munging 
@@ -24,7 +32,7 @@ library(recipes)
 Don't forget to make sure that the type of the outcome variable is factor.
 
 ```{r eval = FALSE}
-sample_data <- autotextclassifier::sample_data
+names(sample_data) <- c("category", "org_name", "ein", "text")
 
 sample_data$category <- as.factor(sample_data$category)
 ```
@@ -47,4 +55,39 @@ rec_obj <- recipe(category ~ text, data = sample_data)
 
 rec <- apply_basic_recipe(rec_obj, text)
 ```
+
+# Split data 
+
+```{r eval = FALSE}
+set.seed(1234)
+
+data_obj <- split_using_srs(data = sample_data, category = category, rec = rec)
+
+c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% data_obj
+```
+
+# Create tuning parameters 
+
+```{r}
+c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
+```
+
+# Create search spaces 
+
+# Create workflows 
+
+# Create 10-fold cross-validation samples 
+
+```{r}
+class_folds <- create_cv_folds(train_x_class, train_y_class, category)
+```
+
+# Select best model 
+
+```{r}
+best_model <- select_best(lasso_wf, rand_wf, xg_wf,
+                        class_folds, lasso_grid, rand_grid, xg_grid)
+```
+
+
 
