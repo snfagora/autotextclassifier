@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+inst/doc
+# /data is the directory where raw data were saved.
+/data

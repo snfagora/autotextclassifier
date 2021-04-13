@@ -1,0 +1,46 @@
+Package: autotextclassifier
+Title: R package for classifying texts using a binary category
+Version: 0.0.1
+Authors@R: 
+    c(person(given = "Jae Yeon",
+           family = "Kim",
+           role = c("aut", "cre"),
+           email = "jaeyeonkim@berkeley.edu",
+           comment = c(ORCID = "0000-0002-6533-7910")),
+      person(given = "Milan",
+           family = "de Vries",
+           role = c("aut"),
+           email = "milandv@jhu.edu"))
+Description: This package automatically classifies texts based on a binary category using lasso, random forest, and XGboost algorithms. The package is built on the tidymodels framework.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dials,
+    dplyr,
+    forcats,
+    ggplot2,
+    glue,
+    magrittr,
+    parsnip,
+    recipes,
+    rsample,
+    stringr,
+    textrecipes,
+    tidyr,
+    tune,
+    workflows,
+    yardstick
+Suggests: 
+    rmarkdown,
+    knitr,
+    devtools, 
+    doParallel, 
+    here, 
+    patchwork, 
+    zeallot
+VignetteBuilder: knitr
+Depends: 
+    R (>= 3.6)
