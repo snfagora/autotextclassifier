@@ -376,11 +376,12 @@ fit_best_models <- function(lasso_wf, best_lasso,
 #' @param category The target binary category.
 #' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
 #' @param prop_ratio The ratio used to split the data. The default value is 0.8
+#' @param metric_choice The selected metrics for the model evaluation among accuracy, balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.
 #' @return A list output that contains the best output for lasso, random forest, and XGBoost.
-#' @importFrom zeallot %<-%
+#' @importFrom zeallot `%<-%`
 #' @export
 
-build_pipeline <- function(data, category, rec, prop_ratio = 0.8) {
+build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice = "accuracy") {
 
   # Split data
   data_obj <- split_using_srs(data = sample_data, category = category, rec = rec)
@@ -391,7 +392,7 @@ build_pipeline <- function(data, category, rec, prop_ratio = 0.8) {
   c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
 
   # Create search spaces
-  c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
+  c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_spec, rand_spec, xg_spec)
 
   # Create workflows
   c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec, category)
@@ -400,7 +401,7 @@ build_pipeline <- function(data, category, rec, prop_ratio = 0.8) {
   class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 
   # Find the best model from each algorithm
-  c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid)
+  c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid, metric_choice = "accuracy")
 
   # Fit the best model from each algorithm to the data
   c(lasso_fit, rand_fit, xg_fit) <- fit_best_models(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)

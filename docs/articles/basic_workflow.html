@@ -157,7 +157,7 @@
 <h2 class="hasAnchor">
 <a href="#create-search-spaces" class="anchor"></a>Create search spaces</h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/create_search_spaces.html">create_search_spaces</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">category</span>, <span class="va">lasso_sepc</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/create_search_spaces.html">create_search_spaces</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">category</span>, <span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="create-workflows" class="section level2">
 <h2 class="hasAnchor">
@@ -174,15 +174,16 @@
 <div id="find-the-best-model-from-each-algorithm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#find-the-best-model-from-each-algorithm" class="anchor"></a>Find the best model from each algorithm</h2>
-<p>This part is most time-consuming.</p>
+<p>This part is most time-consuming. Consider using parallel processing to speed up.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all_cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="va">all_cores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
+<p>The default metric for model evaluation is accuracy. The other options are balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">best_lasso</span>, <span class="va">best_rand</span>, <span class="va">best_xg</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/find_best_model.html">find_best_model</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">rand_wf</span>, <span class="va">xg_wf</span>, <span class="va">class_folds</span>, <span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">best_lasso</span>, <span class="va">best_rand</span>, <span class="va">best_xg</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/find_best_model.html">find_best_model</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">rand_wf</span>, <span class="va">xg_wf</span>, <span class="va">class_folds</span>, <span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span>, metric_choice <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="fit-the-best-model-from-each-algorithm-to-the-data" class="section level2">
 <h2 class="hasAnchor">

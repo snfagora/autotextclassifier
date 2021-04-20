@@ -4,7 +4,13 @@
 \alias{build_pipeline}
 \title{Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data}
 \usage{
-build_pipeline(data, category, rec, prop_ratio = 0.8)
+build_pipeline(
+  data,
+  category,
+  rec,
+  prop_ratio = 0.8,
+  metric_choice = "accuracy"
+)
 }
 \arguments{
 \item{data}{The data to be trained and tested.}
@@ -14,6 +20,8 @@ build_pipeline(data, category, rec, prop_ratio = 0.8)
 \item{rec}{The recipe (preprocessing steps) that will be applied to the training and test data}
 
 \item{prop_ratio}{The ratio used to split the data. The default value is 0.8}
+
+\item{metric_choice}{The selected metrics for the model evaluation among accuracy, balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc). The default value is accuracy.}
 }
 \value{
 A list output that contains the best output for lasso, random forest, and XGBoost.

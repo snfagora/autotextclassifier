@@ -2,7 +2,7 @@
 title: "Basic workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{classify_text}
+  %\VignetteIndexEntry{basic_workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  rmarkdown.html_vignette.check_title = FALSE
 )
 ```
 
@@ -80,7 +81,7 @@ c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
 ## Create search spaces 
 
 ```{r eval = FALSE}
-c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
+c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_spec, rand_spec, xg_spec)
 ```
 
 ## Create workflows 
@@ -97,7 +98,7 @@ class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 
 ## Find the best model from each algorithm
 
-This part is most time-consuming.
+This part is most time-consuming. Consider using parallel processing to speed up.
 
 ```{r eval = FALSE}
 all_cores <- parallel::detectCores(logical = FALSE)
@@ -107,8 +108,10 @@ cl <- makeCluster(all_cores[1] - 1)
 registerDoParallel(cl)
 ```
 
+The default metric for model evaluation is accuracy. The other options are balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc).
+
 ```{r eval = FALSE}
-c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid)
+c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid, metric_choice = "accuracy")
 ```
 
 ## Fit the best model from each algorithm to the data 
