@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize a classification model output — viz_class_fit • autotextclassifier</title>
+<title>Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data — build_pipeline • autotextclassifier</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Visualize a classification model output — viz_class_fit" />
-<meta property="og:description" content="Visualize a classification model output" />
+<meta property="og:title" content="Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data — build_pipeline" />
+<meta property="og:description" content="Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data" />
 
 
 
@@ -123,41 +123,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize a classification model output</h1>
-    <small class="dont-index">Source: <a href='https://github.com/snfagora/autotextclassifier/blob/master/R/utils.r'><code>R/utils.r</code></a></small>
-    <div class="hidden name"><code>viz_class_fit.Rd</code></div>
+    <h1>Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/snfagora/autotextclassifier/blob/master/R/classify_text.r'><code>R/classify_text.r</code></a></small>
+    <div class="hidden name"><code>build_pipeline.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Visualize a classification model output</p>
+    <p>Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>viz_class_fit</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>model_title</span>, <span class='va'>test_x_class</span>, <span class='va'>test_y_class</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>build_pipeline</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>category</span>, <span class='va'>rec</span>, prop_ratio <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>model</th>
-      <td><p>A classification model output</p></td>
+      <th>data</th>
+      <td><p>The data to be trained and tested.</p></td>
     </tr>
     <tr>
-      <th>model_title</th>
-      <td><p>A classification model name</p></td>
+      <th>category</th>
+      <td><p>The target binary category.</p></td>
     </tr>
     <tr>
-      <th>test_x_class</th>
-      <td><p>Outcomes of the test dataset</p></td>
+      <th>rec</th>
+      <td><p>The recipe (preprocessing steps) that will be applied to the training and test data</p></td>
     </tr>
     <tr>
-      <th>test_y_class</th>
-      <td><p>Predictors of the test dataset</p></td>
+      <th>prop_ratio</th>
+      <td><p>The ratio used to split the data. The default value is 0.8</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a bar plot(s)</p>
+    <p>A list output that contains the best output for lasso, random forest, and XGBoost.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

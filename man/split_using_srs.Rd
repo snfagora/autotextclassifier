@@ -4,16 +4,16 @@
 \alias{split_using_srs}
 \title{Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps}
 \usage{
-split_using_srs(data, category, prop_ratio = 0.8, rec)
+split_using_srs(data, category, rec, prop_ratio = 0.8)
 }
 \arguments{
 \item{data}{The data to be trained and tested.}
 
 \item{category}{The target binary category.}
 
-\item{prop_ratio}{The ratio used to split the data. The default value is 0.8}
-
 \item{rec}{The recipe (preprocessing steps) that will be applied to the training and test data}
+
+\item{prop_ratio}{The ratio used to split the data. The default value is 0.8}
 }
 \value{
 A list output that contains train_x_class, test_x_class, train_y_class, test_y_class.

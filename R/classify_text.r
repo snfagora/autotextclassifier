@@ -32,8 +32,8 @@ apply_basic_recipe <- function(recipe, text, token_threshold = 1000){
 #'
 #' @param data The data to be trained and tested.
 #' @param category The target binary category.
-#' @param prop_ratio The ratio used to split the data. The default value is 0.8
 #' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
+#' @param prop_ratio The ratio used to split the data. The default value is 0.8
 #' @return A list output that contains train_x_class, test_x_class, train_y_class, test_y_class.
 #' @importFrom rsample initial_split
 #' @importFrom dplyr mutate
@@ -44,7 +44,7 @@ apply_basic_recipe <- function(recipe, text, token_threshold = 1000){
 #' @importFrom recipes all_outcomes
 #' @export
 
-split_using_srs <- function(data, category, prop_ratio = 0.8, rec) {
+split_using_srs <- function(data, category, rec, prop_ratio = 0.8) {
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
@@ -368,4 +368,47 @@ fit_best_models <- function(lasso_wf, best_lasso,
 
   return(out)
 
+}
+
+#' Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data
+#'
+#' @param data The data to be trained and tested.
+#' @param category The target binary category.
+#' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
+#' @param prop_ratio The ratio used to split the data. The default value is 0.8
+#' @return A list output that contains the best output for lasso, random forest, and XGBoost.
+#' @importFrom zeallot %<-%
+#' @export
+
+build_pipeline <- function(data, category, rec, prop_ratio = 0.8) {
+
+  # Split data
+  data_obj <- split_using_srs(data = sample_data, category = category, rec = rec)
+
+  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% data_obj
+
+  # Create tuning parameters
+  c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
+
+  # Create search spaces
+  c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_sepc, rand_spec, xg_spec)
+
+  # Create workflows
+  c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec, category)
+
+  # Create 10-fold cross-validation samples
+  class_folds <- create_cv_folds(train_x_class, train_y_class, category)
+
+  # Find the best model from each algorithm
+  c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid)
+
+  # Fit the best model from each algorithm to the data
+  c(lasso_fit, rand_fit, xg_fit) <- fit_best_models(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
+
+  # Rename the output
+  out <- list("lasso_fit" = lasso_fit,
+              "rand_fit" = rand_fit,
+              "xg_fit" = xg_fit)
+
+  return(out)
 }

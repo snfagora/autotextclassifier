@@ -1,6 +1,6 @@
 Package: autotextclassifier
 Title: R package for automatically classifying texts based on tidymodels
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: 
     c(person(given = "Jae Yeon",
            family = "Kim",
@@ -34,15 +34,15 @@ Imports:
     tidyr,
     tune,
     workflows,
-    yardstick
+    yardstick,
+    zeallot
 Suggests: 
     rmarkdown,
     knitr,
-    devtools, 
-    doParallel, 
-    here, 
-    patchwork, 
-    zeallot
+    devtools,
+    doParallel,
+    here,
+    patchwork
 VignetteBuilder: knitr
 Depends: 
     R (>= 3.6)
