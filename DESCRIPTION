@@ -27,6 +27,7 @@ Imports:
     glue,
     magrittr,
     parsnip,
+    purrr,
     recipes,
     rsample,
     stringr,

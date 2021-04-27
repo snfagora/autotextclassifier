@@ -3,5 +3,6 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   basic_workflow: basic_workflow.html
-last_built: 2021-04-20T21:05Z
+  build_pipeline: build_pipeline.html
+last_built: 2021-04-27T21:53Z
 

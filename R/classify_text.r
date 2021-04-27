@@ -1,10 +1,12 @@
 
-#' Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.
+#' Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.
 #'
-#' @param recipe A recipe object. e.g., recipe(documents, output ~ predictors)
-#' @param text The name of the text field in the data.
+#' @param formula A formula that specifies the relationship between the outcome and predictor variables (e.g, \code{category} ~ \code{text}.
+#' @param input_data An input data.
+#' @param text The name of the text column in the data.
 #' @param token_threshold The maximum number of the tokens will be used in the classification.
 #' @return A prep object.
+#' @importFrom purrr map
 #' @importFrom recipes recipe
 #' @importFrom recipes prep
 #' @importFrom textrecipes step_tokenize
@@ -13,9 +15,23 @@
 #' @importFrom textrecipes step_tfidf
 #' @export
 
-apply_basic_recipe <- function(recipe, text, token_threshold = 1000){
+apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000){
 
-  recipe %>%
+  if (sum(is.na(input_data$text)) != 0) {
+
+    warning("The text field includes missing values.")
+
+  }
+
+  if (sum(map(sample_data$text, nchar) < 5) != 0) {
+
+    warning("The text field includes very short documents (less than 5 words).")
+
+  }
+
+  rec_obj <- recipe(formula, data = input_data)
+
+  rec_obj %>%
     # Used bigrams
     step_tokenize(text, token = "ngrams", options = list(n = 2)) %>%
     # Removed stopwords
@@ -335,7 +351,7 @@ find_best_model <- function(lasso_wf, rand_wf, xg_wf,
 #' @importFrom parsnip fit
 #' @export
 
-fit_best_models <- function(lasso_wf, best_lasso,
+fit_best_model <- function(lasso_wf, best_lasso,
                             rand_wf, best_rand,
                             xg_wf, best_xg,
                             train_x_class,
@@ -404,7 +420,7 @@ build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice 
   c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid, metric_choice = "accuracy")
 
   # Fit the best model from each algorithm to the data
-  c(lasso_fit, rand_fit, xg_fit) <- fit_best_models(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
+  c(lasso_fit, rand_fit, xg_fit) <- fit_best_model(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
 
   # Rename the output
   out <- list("lasso_fit" = lasso_fit,

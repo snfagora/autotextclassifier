@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF. — apply_basic_recipe • autotextclassifier</title>
+<title>Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF. — apply_basic_recipe • autotextclassifier</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF. — apply_basic_recipe" />
-<meta property="og:description" content="Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF." />
+<meta property="og:title" content="Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF. — apply_basic_recipe" />
+<meta property="og:description" content="Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF." />
 
 
 
@@ -97,6 +97,9 @@
     <li>
       <a href="../articles/basic_workflow.html">Basic workflow</a>
     </li>
+    <li>
+      <a href="../articles/build_pipeline.html">Build a pipeline</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -123,27 +126,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.</h1>
+    <h1>Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.</h1>
     <small class="dont-index">Source: <a href='https://github.com/snfagora/autotextclassifier/blob/master/R/classify_text.r'><code>R/classify_text.r</code></a></small>
     <div class="hidden name"><code>apply_basic_recipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.</p>
+    <p>Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>apply_basic_recipe</span><span class='op'>(</span><span class='va'>recipe</span>, <span class='va'>text</span>, token_threshold <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>apply_basic_recipe</span><span class='op'>(</span><span class='va'>input_data</span>, <span class='va'>formula</span>, <span class='va'>text</span>, token_threshold <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>recipe</th>
-      <td><p>A recipe object. e.g., recipe(documents, output ~ predictors)</p></td>
+      <th>input_data</th>
+      <td><p>An input data.</p></td>
+    </tr>
+    <tr>
+      <th>formula</th>
+      <td><p>A formula that specifies the relationship between the outcome and predictor variables (e.g, <code>category</code> ~ <code>text</code>.</p></td>
     </tr>
     <tr>
       <th>text</th>
-      <td><p>The name of the text field in the data.</p></td>
+      <td><p>The name of the text column in the data.</p></td>
     </tr>
     <tr>
       <th>token_threshold</th>

@@ -1,8 +1,8 @@
 ---
-title: "Basic workflow"
+title: "Build a pipeline"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{basic_workflow}
+  %\VignetteIndexEntry{build_pipeline}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -60,66 +60,12 @@ Term frequency-inverse document frequency with text [trained]
 rec <- apply_basic_recipe(sample_data, category ~ text, text)
 ```
 
-## Split data 
+## Build a pipeline 
+
+The `build_pipeline` function reduces the steps one needs to take a classifier pipeline. The pipeline involves data splitting, creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples, finding the best model from each algorithm and fitting the best model from each algorithm to the data. 
 
 ```{r eval = FALSE}
-set.seed(1234)
-
-data_obj <- split_using_srs(data = sample_data, category = category, rec = rec)
-
-c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% data_obj
-```
-
-## Create tuning parameters 
-
-```{r eval = FALSE}
-c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
-```
-
-## Create search spaces 
-
-```{r eval = FALSE}
-c(lasso_grid, rand_grid, xg_grid) %<-% create_search_spaces(train_x_class, category, lasso_spec, rand_spec, xg_spec)
-```
-
-## Create workflows 
-
-```{r eval = FALSE}
-c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec, category)
-```
-
-## Create 10-fold cross-validation samples 
-
-```{r eval = FALSE}
-set.seed(1234)
-
-class_folds <- create_cv_folds(train_x_class, train_y_class, category)
-```
-
-## Find the best model from each algorithm
-
-Consider using parallel processing to speed up.
-
-```{r eval = FALSE}
-all_cores <- parallel::detectCores(logical = FALSE)
-
-cl <- makeCluster(all_cores[1] - 1)
-
-registerDoParallel(cl)
-```
-
-The default metric for model evaluation is accuracy. The other options are balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc).
-
-```{r eval = FALSE}
-c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid, metric_choice = "accuracy")
-```
-
-## Fit the best model from each algorithm to the data 
-
-This step would take the longest running time. We recommend saving this output as an RData object somewhere.
-
-```{r eval = FALSE}
-c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_model(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
+c(lasso_fit, rand_fit, xg_fit) %<-% build_pipeline(rec, category, rec, prop_ratio = 0.8, metric_choice = "accuracy")
 ```
 
 ## Evaluate the model using visualization

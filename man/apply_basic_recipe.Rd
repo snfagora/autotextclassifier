@@ -2,14 +2,16 @@
 % Please edit documentation in R/classify_text.r
 \name{apply_basic_recipe}
 \alias{apply_basic_recipe}
-\title{Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.}
+\title{Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.}
 \usage{
-apply_basic_recipe(recipe, text, token_threshold = 1000)
+apply_basic_recipe(input_data, formula, text, token_threshold = 1000)
 }
 \arguments{
-\item{recipe}{A recipe object. e.g., recipe(documents, output ~ predictors)}
+\item{input_data}{An input data.}
 
-\item{text}{The name of the text field in the data.}
+\item{formula}{A formula that specifies the relationship between the outcome and predictor variables (e.g, \code{category} ~ \code{text}.}
+
+\item{text}{The name of the text column in the data.}
 
 \item{token_threshold}{The maximum number of the tokens will be used in the classification.}
 }
@@ -17,5 +19,5 @@ apply_basic_recipe(recipe, text, token_threshold = 1000)
 A prep object.
 }
 \description{
-Apply basic recipe to the recipe object. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.
+Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.
 }

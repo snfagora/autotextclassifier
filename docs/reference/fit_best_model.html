@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps — split_using_srs • autotextclassifier</title>
+<title>Fit the best model from each algorithm to the data. — fit_best_model • autotextclassifier</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps — split_using_srs" />
-<meta property="og:description" content="Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps" />
+<meta property="og:title" content="Fit the best model from each algorithm to the data. — fit_best_model" />
+<meta property="og:description" content="Fit the best model from each algorithm to the data." />
 
 
 
@@ -126,41 +126,71 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps</h1>
+    <h1>Fit the best model from each algorithm to the data.</h1>
     <small class="dont-index">Source: <a href='https://github.com/snfagora/autotextclassifier/blob/master/R/classify_text.r'><code>R/classify_text.r</code></a></small>
-    <div class="hidden name"><code>split_using_srs.Rd</code></div>
+    <div class="hidden name"><code>fit_best_model.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps</p>
+    <p>Fit the best model from each algorithm to the data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>split_using_srs</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>category</span>, <span class='va'>rec</span>, prop_ratio <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fit_best_model</span><span class='op'>(</span>
+  <span class='va'>lasso_wf</span>,
+  <span class='va'>best_lasso</span>,
+  <span class='va'>rand_wf</span>,
+  <span class='va'>best_rand</span>,
+  <span class='va'>xg_wf</span>,
+  <span class='va'>best_xg</span>,
+  <span class='va'>train_x_class</span>,
+  <span class='va'>train_y_class</span>,
+  <span class='va'>category</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>The data to be trained and tested.</p></td>
+      <th>lasso_wf</th>
+      <td><p>A lasso workflow (including the search space for the model)</p></td>
+    </tr>
+    <tr>
+      <th>best_lasso</th>
+      <td><p>The best model output for lasso</p></td>
+    </tr>
+    <tr>
+      <th>rand_wf</th>
+      <td><p>A random forest workflow (including the search space for the model)</p></td>
+    </tr>
+    <tr>
+      <th>best_rand</th>
+      <td><p>The best model output for random forest</p></td>
+    </tr>
+    <tr>
+      <th>xg_wf</th>
+      <td><p>An XGBoost workflow (including the search space for the model)</p></td>
+    </tr>
+    <tr>
+      <th>best_xg</th>
+      <td><p>The best model output for XGBoost</p></td>
+    </tr>
+    <tr>
+      <th>train_x_class</th>
+      <td><p>Training data for predictors</p></td>
+    </tr>
+    <tr>
+      <th>train_y_class</th>
+      <td><p>Training data for outcomes</p></td>
     </tr>
     <tr>
       <th>category</th>
       <td><p>The target binary category.</p></td>
     </tr>
-    <tr>
-      <th>rec</th>
-      <td><p>The recipe (preprocessing steps) that will be applied to the training and test data</p></td>
-    </tr>
-    <tr>
-      <th>prop_ratio</th>
-      <td><p>The ratio used to split the data. The default value is 0.8</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list output that contains train_x_class, test_x_class, train_y_class, test_y_class.</p>
+    <p>A list output that contains the best output for lasso, random forest, and XGBoost.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
