@@ -143,14 +143,22 @@
 <a href="#build-a-pipeline" class="anchor"></a>Build a pipeline</h2>
 <p>The <code>build_pipeline</code> function reduces the steps one needs to take a classifier pipeline. The pipeline involves data splitting, creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples, finding the best model from each algorithm and fitting the best model from each algorithm to the data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Using parallel processing to speed up</span>
+<span class="va">all_cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="va">all_cores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">rand_fit</span>, <span class="va">xg_fit</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/build_pipeline.html">build_pipeline</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">category</span>, <span class="va">rec</span>, prop_ratio <span class="op">=</span> <span class="fl">0.8</span>, metric_choice <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="evaluate-the-model-using-visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#evaluate-the-model-using-visualization" class="anchor"></a>Evaluate the model using visualization</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Decide the metrics to display </span>
-<span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu">yardstick</span><span class="fu">::</span><span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">bal_accuracy</span>, <span class="va">f_meas</span>, <span class="va">roc_auc</span><span class="op">)</span>
+<span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu">yardstick</span><span class="fu">::</span><span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">bal_accuracy</span>, <span class="va">f_meas</span><span class="op">)</span>
+<span class="co"># metrics &lt;- yardstick::metric_set(roc_auc) If you want to use roc_auc, you should use metric_choice = "roc_auc" for the build_pipeline() function.</span>
 
 <span class="co"># Show the results </span>
 <span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span> 

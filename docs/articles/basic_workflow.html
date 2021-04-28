@@ -144,9 +144,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
 
-<span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/split_using_srs.html">split_using_srs</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sample_data</span>, category <span class="op">=</span> <span class="va">category</span>, rec <span class="op">=</span> <span class="va">rec</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">test_x_class</span>, <span class="va">train_y_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="va">data_obj</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">test_x_class</span>, <span class="va">train_y_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/split_using_srs.html">split_using_srs</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sample_data</span>, category <span class="op">=</span> <span class="va">category</span>, rec <span class="op">=</span> <span class="va">rec</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="create-tuning-parameters" class="section level2">
 <h2 class="hasAnchor">
@@ -199,10 +197,7 @@
 <h2 class="hasAnchor">
 <a href="#evaluate-the-model-using-visualization" class="anchor"></a>Evaluate the model using visualization</h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Decide the metrics to display </span>
-<span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu">yardstick</span><span class="fu">::</span><span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">bal_accuracy</span>, <span class="va">f_meas</span>, <span class="va">roc_auc</span><span class="op">)</span>
-
-<span class="co"># Show the results </span>
+<code class="sourceCode R"><span class="co"># Show the results </span>
 <span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span> 
 <span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span>
 <span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span></code></pre></div>

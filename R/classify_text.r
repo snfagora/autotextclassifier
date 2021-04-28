@@ -6,6 +6,7 @@
 #' @param text The name of the text column in the data.
 #' @param token_threshold The maximum number of the tokens will be used in the classification.
 #' @return A prep object.
+#' @importFrom glue glue
 #' @importFrom purrr map
 #' @importFrom recipes recipe
 #' @importFrom recipes prep
@@ -29,9 +30,13 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 
   }
 
+  message("Checked the missing values and extremely short documents.")
+
   rec_obj <- recipe(formula, data = input_data)
 
-  rec_obj %>%
+  message("Created the recipe object.")
+
+  out <- rec_obj %>%
     # Used bigrams
     step_tokenize(text, token = "ngrams", options = list(n = 2)) %>%
     # Removed stopwords
@@ -41,6 +46,10 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
     # Normalized document length
     step_tfidf(text) %>%
     prep()
+
+  message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and normalized the document length using TF-IDF."))
+
+  return(out)
 
 }
 
@@ -400,9 +409,7 @@ fit_best_model <- function(lasso_wf, best_lasso,
 build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice = "accuracy") {
 
   # Split data
-  data_obj <- split_using_srs(data = sample_data, category = category, rec = rec)
-
-  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% data_obj
+  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(data = sample_data, category = category, rec = rec)
 
   # Create tuning parameters
   c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()
@@ -420,7 +427,7 @@ build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice 
   c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid, metric_choice = "accuracy")
 
   # Fit the best model from each algorithm to the data
-  c(lasso_fit, rand_fit, xg_fit) <- fit_best_model(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
+  c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_model(lasso_wf, best_lasso, rand_wf, best_rand, xg_wf, best_xg, train_x_class, train_y_class, category)
 
   # Rename the output
   out <- list("lasso_fit" = lasso_fit,

@@ -65,6 +65,15 @@ rec <- apply_basic_recipe(sample_data, category ~ text, text)
 The `build_pipeline` function reduces the steps one needs to take a classifier pipeline. The pipeline involves data splitting, creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples, finding the best model from each algorithm and fitting the best model from each algorithm to the data. 
 
 ```{r eval = FALSE}
+# Using parallel processing to speed up
+all_cores <- parallel::detectCores(logical = FALSE)
+
+cl <- makeCluster(all_cores[1] - 1)
+
+registerDoParallel(cl)
+```
+
+```{r eval = FALSE}
 c(lasso_fit, rand_fit, xg_fit) %<-% build_pipeline(rec, category, rec, prop_ratio = 0.8, metric_choice = "accuracy")
 ```
 
@@ -72,7 +81,8 @@ c(lasso_fit, rand_fit, xg_fit) %<-% build_pipeline(rec, category, rec, prop_rati
 
 ```{r eval = FALSE}
 # Decide the metrics to display 
-metrics <- yardstick::metric_set(accuracy, bal_accuracy, f_meas, roc_auc)
+metrics <- yardstick::metric_set(accuracy, bal_accuracy, f_meas)
+# metrics <- yardstick::metric_set(roc_auc) If you want to use roc_auc, you should use metric_choice = "roc_auc" for the build_pipeline() function.
 
 # Show the results 
 viz_class_fit(lasso_fit, "Lasso", test_x_class, test_y_class) + 

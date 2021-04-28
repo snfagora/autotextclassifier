@@ -38,19 +38,30 @@ viz_class_fit <- function(model, model_title, test_x_class, test_y_class){
 #' @return A dataframe of two columns (truth, estimate)
 #' @importFrom tidyr tibble
 #' @importFrom dplyr bind_cols
+#' @importFrom dplyr bind_rows
 #' @importFrom yardstick metrics
+#' @importFrom yardstick metric_set
+#' @importFrom yardstick roc_auc
 #' @importFrom stats predict
 #' @export
 
 evaluate_class_fit <- function(model, test_x_class, test_y_class){
 
+    metrics <- metric_set(accuracy, bal_accuracy, f_meas)
+
     # Bind ground truth and predicted values
-    out <- bind_cols(tibble(truth = test_y_class), # Ground truth
-                     predict(model, test_x_class)) # Predicted values
+    out <- tibble(truth = test_y_class,
+                  predicted = predict(model, test_x_class)$.pred_class,
+                  `FALSE` = predict(model, test_x_class, type = "prob")$.pred_FALSE.,
+                  `TRUE` = predict(model, test_x_class, type = "prob")$.pred_TRUE.)
 
     # Calculate metrics
-    out %>% metrics(truth = truth, estimate = .pred_class)
+    non_roc <- out %>% metrics(truth = truth, estimate = predicted)
+    roc <- out %>% roc_auc(truth, `FALSE`)
 
+    out <- bind_rows(non_roc, roc)
+
+    return(out)
 }
 
 # The following function is adapted from https://juliasilge.com/blog/animal-crossing/
