@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">autotextclassifier</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -135,7 +135,14 @@
     <p>Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>apply_basic_recipe</span><span class='op'>(</span><span class='va'>input_data</span>, <span class='va'>formula</span>, <span class='va'>text</span>, token_threshold <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>apply_basic_recipe</span><span class='op'>(</span>
+  <span class='va'>input_data</span>,
+  <span class='va'>formula</span>,
+  <span class='va'>text</span>,
+  token_threshold <span class='op'>=</span> <span class='fl'>1000</span>,
+  add_embedding <span class='op'>=</span> <span class='cn'>NULL</span>,
+  embed_dims <span class='op'>=</span> <span class='fl'>100</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,6 +162,14 @@
     <tr>
       <th>token_threshold</th>
       <td><p>The maximum number of the tokens will be used in the classification.</p></td>
+    </tr>
+    <tr>
+      <th>add_embedding</th>
+      <td><p>Add word embedding for feature engineering. The default value is NULL. Replace NULL with TRUE, if you want to add word embedding.</p></td>
+    </tr>
+    <tr>
+      <th>embed_dims</th>
+      <td><p>Word embedding dimensions. The default value is 100.</p></td>
     </tr>
     </table>
 

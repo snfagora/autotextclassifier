@@ -47,17 +47,28 @@ sample_data$category <- as.factor(sample_data$category)
 
 The `rec` object provides the following information. The function also checks whether the `text` column has missing values or includes extremely short documents (less than five words).
 
-> Training data contained 232 data points and no missing data.
+There are two broad basic options for text preprocessing. 
 
-> Operations:
+1. Without word embedding 
 
-> Tokenization for text [trained]
-Stop word removal for text [trained]
-Text filtering for text [trained]
-Term frequency-inverse document frequency with text [trained]
+* Tokenization for text [trained]
+* Stop word removal for text [trained]
+* Text filtering for text [trained]
+* Term frequency-inverse document frequency with text [trained]
+
+2. With word embedding 
+
+* Tokenization for text [trained]
+* Stop word removal for text [trained]
+* Text filtering for text [trained]
+* Word embeddings aggregated from text [trained]
 
 ```{r eval = FALSE}
+# Without word embedding 
 rec <- apply_basic_recipe(sample_data, category ~ text, text)
+
+# With word embedding 
+rec_alt <- apply_basic_recipe(sample_data, category ~ text, text, add_embedding = TRUE)
 ```
 
 ## Split data 

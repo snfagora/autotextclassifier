@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">autotextclassifier</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -126,17 +126,31 @@
 <h2 class="hasAnchor">
 <a href="#apply-basic-recipe" class="anchor"></a>Apply basic recipe</h2>
 <p>The <code>rec</code> object provides the following information. The function also checks whether the <code>text</code> column has missing values or includes extremely short documents (less than five words).</p>
-<blockquote>
-<p>Training data contained 232 data points and no missing data.</p>
-</blockquote>
-<blockquote>
-<p>Operations:</p>
-</blockquote>
-<blockquote>
-<p>Tokenization for text [trained] Stop word removal for text [trained] Text filtering for text [trained] Term frequency-inverse document frequency with text [trained]</p>
-</blockquote>
+<p>There are two broad basic options for text preprocessing.</p>
+<ol style="list-style-type: decimal">
+<li>Without word embedding</li>
+</ol>
+<ul>
+<li>Tokenization for text [trained]</li>
+<li>Stop word removal for text [trained]</li>
+<li>Text filtering for text [trained]</li>
+<li>Term frequency-inverse document frequency with text [trained]</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>With word embedding</li>
+</ol>
+<ul>
+<li>Tokenization for text [trained]</li>
+<li>Stop word removal for text [trained]</li>
+<li>Text filtering for text [trained]</li>
+<li>Word embeddings aggregated from text [trained]</li>
+</ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/apply_basic_recipe.html">apply_basic_recipe</a></span><span class="op">(</span><span class="va">sample_data</span>, <span class="va">category</span> <span class="op">~</span> <span class="va">text</span>, <span class="va">text</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Without word embedding</span>
+<span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/apply_basic_recipe.html">apply_basic_recipe</a></span><span class="op">(</span><span class="va">sample_data</span>, <span class="va">category</span> <span class="op">~</span> <span class="va">text</span>, <span class="va">text</span><span class="op">)</span>
+
+<span class="co"># With word embedding </span>
+<span class="va">rec_alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/apply_basic_recipe.html">apply_basic_recipe</a></span><span class="op">(</span><span class="va">sample_data</span>, <span class="va">category</span> <span class="op">~</span> <span class="va">text</span>, <span class="va">text</span>, add_embedding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="build-a-pipeline" class="section level2">
 <h2 class="hasAnchor">

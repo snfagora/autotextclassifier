@@ -1,22 +1,26 @@
 
 #' Apply basic recipe to the dataframe that includes a text column. The basic recipe includes tokenization (using bigrams), removing stop words, filtering stop words by max tokens = 1,000, and normalization of document length using TF-IDF.
 #'
-#' @param formula A formula that specifies the relationship between the outcome and predictor variables (e.g, \code{category} ~ \code{text}.
 #' @param input_data An input data.
+#' @param formula A formula that specifies the relationship between the outcome and predictor variables (e.g, \code{category} ~ \code{text}.
 #' @param text The name of the text column in the data.
 #' @param token_threshold The maximum number of the tokens will be used in the classification.
+#' @param add_embedding Add word embedding for feature engineering. The default value is NULL. Replace NULL with TRUE, if you want to add word embedding.
+#' @param embed_dims Word embedding dimensions. The default value is 100.
 #' @return A prep object.
 #' @importFrom glue glue
 #' @importFrom purrr map
 #' @importFrom recipes recipe
 #' @importFrom recipes prep
+#' @importFrom textdata embedding_glove6b
 #' @importFrom textrecipes step_tokenize
 #' @importFrom textrecipes step_stopwords
 #' @importFrom textrecipes step_tokenfilter
+#' @importFrom textrecipes step_word_embeddings
 #' @importFrom textrecipes step_tfidf
 #' @export
 
-apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000){
+apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000, add_embedding = NULL, embed_dims = 100){
 
   if (sum(is.na(input_data$text)) != 0) {
 
@@ -36,18 +40,42 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 
   message("Created the recipe object.")
 
-  out <- rec_obj %>%
-    # Used bigrams
-    step_tokenize(text, token = "ngrams", options = list(n = 2)) %>%
-    # Removed stopwords
-    step_stopwords(text) %>%
-    # Filtered tokens
-    step_tokenfilter(text, max_tokens = token_threshold) %>%
-    # Normalized document length
-    step_tfidf(text) %>%
-    prep()
+  if (is.null(add_embedding)) {
 
-  message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and normalized the document length using TF-IDF."))
+    out <- rec_obj %>%
+      # Used bigrams
+      step_tokenize(text, token = "ngrams", options = list(n = 2)) %>%
+      # Removed stopwords
+      step_stopwords(text) %>%
+      # Filtered tokens
+      step_tokenfilter(text, max_tokens = token_threshold) %>%
+      # Normalized document length
+      step_tfidf(text) %>%
+      prep()
+
+      message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and normalized the document length using TF-IDF."))
+
+  }
+
+  if (!is.null(add_embedding)) {
+
+    # Define the dimensions of word vectors
+    glove6b <- textdata::embedding_glove6b(dimensions = embed_dims)
+
+    out <- rec_obj %>%
+      # Tokenize
+      step_tokenize(text, options = list(strip_punct = FALSE)) %>%
+      # Removed stopwords
+      step_stopwords(text) %>%
+      # Filtered tokens
+      step_tokenfilter(text, max_tokens = 1000) %>%
+      # Add word embedding
+      step_word_embeddings(text, embeddings = glove6b) %>%
+      prep()
+
+      message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and added word embedding for feature engineering."))
+
+  }
 
   return(out)
 
