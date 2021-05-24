@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="build_pipeline_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="build_pipeline_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Build a pipeline</h1>
@@ -164,20 +164,29 @@
 
 <span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">rand_fit</span>, <span class="va">xg_fit</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/build_pipeline.html">build_pipeline</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">category</span>, <span class="va">rec</span>, prop_ratio <span class="op">=</span> <span class="fl">0.8</span>, metric_choice <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">rand_fit</span>, <span class="va">xg_fit</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/build_pipeline.html">build_pipeline</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">category</span>, <span class="va">rec</span>, prop_ratio <span class="op">=</span> <span class="fl">0.8</span>, metric_choice <span class="op">=</span> <span class="st">"roc_auc"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="evaluate-the-model-using-visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#evaluate-the-model-using-visualization" class="anchor"></a>Evaluate the model using visualization</h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Decide the metrics to display </span>
-<span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu">yardstick</span><span class="fu">::</span><span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">bal_accuracy</span>, <span class="va">f_meas</span><span class="op">)</span>
-<span class="co"># metrics &lt;- yardstick::metric_set(roc_auc) If you want to use roc_auc, you should use metric_choice = "roc_auc" for the build_pipeline() function.</span>
+<code class="sourceCode R"><span class="co"># Based on the class-based metrics </span>
 
-<span class="co"># Show the results </span>
-<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span> 
-<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span>
-<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> 
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"class"</span><span class="op">)</span>
+
+<span class="co"># Based on the probability-based metrics </span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span> <span class="op">+</span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span> <span class="op">+</span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 

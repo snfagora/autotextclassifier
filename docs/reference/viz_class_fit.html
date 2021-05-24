@@ -135,7 +135,7 @@
     <p>Visualize a classification model output</p>
     </div>
 
-    <pre class="usage"><span class='fu'>viz_class_fit</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>model_title</span>, <span class='va'>test_x_class</span>, <span class='va'>test_y_class</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>viz_class_fit</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>model_title</span>, <span class='va'>test_x_class</span>, <span class='va'>test_y_class</span>, <span class='va'>metric_type</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,11 +156,15 @@
       <th>test_y_class</th>
       <td><p>Predictors of the test dataset</p></td>
     </tr>
+    <tr>
+      <th>metric_type</th>
+      <td><p>A type of the metrics ("class" or "probability"). Either a "class"-based metrics (e.g., accuracy, balanced accuracy, F-score) or a "probability"-based metrics (e.g., ROC Curve).</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a bar plot(s)</p>
+    <p>a bar or line plot(s)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
