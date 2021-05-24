@@ -7,61 +7,61 @@
 #' @param model_title A classification model name
 #' @param test_y_class Predictors of the test dataset
 #' @param test_x_class Outcomes of the test dataset
-#' @return a bar plot(s)
-#' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 geom_text
-#' @importFrom ggplot2 geom_col
-#' @importFrom ggplot2 labs
-#' @importFrom ggplot2 ylim
-#' @importFrom glue glue
-#' @export
-#'
-
-viz_class_fit <- function(model, model_title, test_x_class, test_y_class){
-    evaluate_class_fit(model, test_x_class, test_y_class) %>%
-        ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
-        geom_col() +
-        labs(x = "Metrics",
-             y = "Estimate") +
-        ylim(c(0,1)) +
-        geom_text(aes(label = round(.estimate, 2)),
-                  size = 10,
-                  color = "red") +
-        labs(title = model_title)
-}
-
-#' Evaluate a classification model output
-#
-#' @param model A classification model output
-#' @param test_y_class Predictors of the test dataset
-#' @param test_x_class Outcomes of the test dataset
-#' @return A dataframe of two columns (truth, estimate)
+#' @param metric_type A type of the metrics ("class" or "probability"). Either a "class"-based metrics (e.g., accuracy, balanced accuracy, F-score) or a "probability"-based metrics (e.g., ROC Curve).
+#' @return a bar or line plot(s)
 #' @importFrom tidyr tibble
 #' @importFrom dplyr bind_cols
 #' @importFrom dplyr bind_rows
 #' @importFrom yardstick metrics
 #' @importFrom yardstick metric_set
 #' @importFrom yardstick roc_auc
+#' @importFrom yardstick accuracy
+#' @importFrom yardstick bal_accuracy
+#' @importFrom yardstick f_meas
 #' @importFrom stats predict
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 geom_text
+#' @importFrom ggplot2 geom_col
+#' @importFrom ggplot2 labs
+#' @importFrom ggplot2 ylim
+#' @importFrom ggplot2 autoplot
+#' @importFrom glue glue
 #' @export
+#'
 
-evaluate_class_fit <- function(model, test_x_class, test_y_class){
+viz_class_fit <- function(model, model_title, test_x_class, test_y_class, metric_type){
 
-    metrics <- metric_set(accuracy, bal_accuracy, f_meas)
+    if (metric_type == "class") {
 
-    # Bind ground truth and predicted values
-    out <- tibble(truth = test_y_class,
-                  predicted = predict(model, test_x_class)$.pred_class,
-                  `FALSE` = predict(model, test_x_class, type = "prob")$.pred_FALSE.,
-                  `TRUE` = predict(model, test_x_class, type = "prob")$.pred_TRUE.)
+        metrics <- yardstick::metric_set(accuracy, bal_accuracy, f_meas)
 
-    # Calculate metrics
-    non_roc <- out %>% metrics(truth = truth, estimate = predicted)
-    roc <- out %>% roc_auc(truth, `FALSE`)
+        out <- tibble(truth = test_y_class,
+               predicted = predict(model, test_x_class)$.pred_class) %>%
+            metrics(truth = truth, estimate = predicted) %>%
+            ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
+            geom_col() +
+            labs(x = "Metrics",
+                 y = "Estimate") +
+            ylim(c(0,1)) +
+            geom_text(aes(label = round(.estimate, 2)),
+                      color = "red") +
+            labs(title = model_title)
 
-    out <- bind_rows(non_roc, roc)
+    }
+
+    if (metric_type == "probability") {
+
+        metrics <- yardstick::metric_set(roc_auc)
+
+        out <- tibble(truth = test_y_class,
+               Class1 = predict(model, test_x_class, type = "prob")$.pred_FALSE.) %>%
+               roc_curve(truth, Class1) %>%
+               autoplot()
+
+    }
 
     return(out)
+
 }
 
 # The following function is adapted from https://juliasilge.com/blog/animal-crossing/

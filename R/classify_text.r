@@ -101,9 +101,10 @@ split_using_srs <- function(data, category, rec, prop_ratio = 0.8) {
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
+  data <- data %>% mutate(category = as.factor(category))
+
   # Split by stratified random sampling
   split_class <- initial_split(data,
-                               mutate(category = as.factor(category)),
                                strata = category,
                                prop = prop_ratio)
 
@@ -119,9 +120,9 @@ split_using_srs <- function(data, category, rec, prop_ratio = 0.8) {
 
   # y outcomes (outcomes)
   train_y_class <- bake(rec,
-                        raw_train_class, all_outcomes())$category %>% as.factor()
+                        raw_train_class, all_outcomes())$category
 
-  test_y_class <- bake(rec, raw_test_class, all_outcomes())$category %>% as.factor()
+  test_y_class <- bake(rec, raw_test_class, all_outcomes())$category
 
   # Putting together
   out <- list("train_x_class" = train_x_class,
@@ -438,6 +439,12 @@ build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice 
 
   # Split data
   c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(data = sample_data, category = category, rec = rec)
+
+  # Export these objects to the global environment
+  assign("train_x_class", train_x_class, envir = globalenv())
+  assign("train_y_class", train_y_class, envir = globalenv())
+  assign("test_x_class", test_x_class, envir = globalenv())
+  assign("test_y_class", test_y_class, envir = globalenv())
 
   # Create tuning parameters
   c(lasso_spec, rand_spec, xg_spec) %<-% create_tunes()

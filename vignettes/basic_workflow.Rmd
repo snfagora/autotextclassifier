@@ -134,8 +134,19 @@ c(lasso_fit, rand_fit, xg_fit) %<-% fit_best_model(lasso_wf, best_lasso, rand_wf
 ## Evaluate the model using visualization
 
 ```{r eval = FALSE}
-# Show the results 
-viz_class_fit(lasso_fit, "Lasso", test_x_class, test_y_class) + 
-viz_class_fit(rand_fit, "Random forest", test_x_class, test_y_class) +
-viz_class_fit(xg_fit, "XGBoost", test_x_class, test_y_class)
+# Based on the class-based metrics 
+
+viz_class_fit(lasso_fit, "Lasso", test_x_class, test_y_class, "class") + 
+
+viz_class_fit(rand_fit, "Random forest", test_x_class, test_y_class, "class") +
+
+viz_class_fit(xg_fit, "XGBoost", test_x_class, test_y_class, "class")
+
+# Based on the probability-based metrics 
+
+viz_class_fit(lasso_fit, "Lasso", test_x_class, test_y_class, "probability") +
+
+viz_class_fit(rand_fit, "Random forest", test_x_class, test_y_class, "probability") +
+
+viz_class_fit(xg_fit, "XGBoost", test_x_class, test_y_class, "probability")
 ```
