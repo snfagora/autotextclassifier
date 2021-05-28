@@ -150,3 +150,20 @@ viz_class_fit(rand_fit, "Random forest", test_x_class, test_y_class, "probabilit
 
 viz_class_fit(xg_fit, "XGBoost", test_x_class, test_y_class, "probability")
 ```
+
+# Predict new data 
+
+This is just a hypothetical example. Let's denote the new data as "new_sample_data." (It has the data structure as the sample_data.) The `tidymodels` package provides the following functions.
+
+```{r eval = FALSE}
+# Preprocessding data using the recipe created earlier 
+new_preporcessed <- bake(rec, new_sample_data)
+
+# Making predictions using the best lasso model 
+new_sample_data$category <- predict(lasso_fit, new_preporcessed)$.pred_class 
+
+# If you want to extract probabilities, use the following depending on whether you want to predict FALSE or TRUE values.
+# new_sample_data$category <- predict(lasso_fit, new_preporcessed, type = "prob")$.pred_FALSE.
+# new_sample_data$category <- predict(lasso_fit, new_preporcessed, type = "prob")$.pred_TRUE.
+```
+
