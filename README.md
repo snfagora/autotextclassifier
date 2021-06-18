@@ -13,7 +13,7 @@ The goal of autotextclassifier is to ...
 
 if(!require(devtools)) install.packages("devtools")
 
-devtools::install_github("jaeyk/autotextclassifier")
+devtools::install_github("snfagora/autotextclassifier")
 ```
 
 ## Example
