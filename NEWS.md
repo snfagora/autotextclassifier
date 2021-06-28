@@ -1,3 +1,7 @@
+# autotextclassifier 0.0.4
+
+* Added removing sparse terms for feature engineering 
+
 # autotextclassifier 0.0.3
 
 * Added word embedding for feature engineering.
