@@ -297,7 +297,8 @@ create_cv_folds <- function(train_x_class, train_y_class, category){
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
-  class_folds <- vfold_cv(train_x_class %>% bind_cols(tibble(category = train_y_class)),
+  class_folds <- vfold_cv(train_x_class %>%
+                            bind_cols(tibble(category = train_y_class)),
                         strata = category)
 
   return(class_folds)
