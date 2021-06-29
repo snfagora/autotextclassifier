@@ -296,9 +296,10 @@ create_workflows <- function(lasso_spec, rand_spec, xg_spec, category) {
 #' @importFrom rsample vfold_cv
 #' @importFrom dplyr bind_cols
 #' @importFrom tidyr tibble
+#' @export
 #'
 
-create_cv_sets <- function(train_x_class, train_y_class, category){
+create_cv_folds <- function(train_x_class, train_y_class, category){
 
   # 10-fold cross-validation
 
@@ -463,7 +464,7 @@ build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice 
   c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec, category)
 
   # Create 10-fold cross-validation samples
-  class_folds <- create_cv_sets(train_x_class, train_y_class, category)
+  class_folds <- create_cv_folds(train_x_class, train_y_class, category)
 
   # Find the best model from each algorithm
   c(best_lasso, best_rand, best_xg) %<-% find_best_model(lasso_wf, rand_wf, xg_wf, class_folds, lasso_grid, rand_grid, xg_grid, metric_choice = "accuracy")

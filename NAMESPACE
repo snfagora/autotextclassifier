@@ -3,6 +3,7 @@
 export("%>%")
 export(apply_basic_recipe)
 export(build_pipeline)
+export(create_cv_folds)
 export(create_search_spaces)
 export(create_tunes)
 export(create_workflows)
