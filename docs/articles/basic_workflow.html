@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">autotextclassifier</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
       </span>
     </div>
 
@@ -211,10 +211,36 @@
 <h2 class="hasAnchor">
 <a href="#evaluate-the-model-using-visualization" class="anchor"></a>Evaluate the model using visualization</h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Show the results </span>
-<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span> 
-<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">+</span>
-<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Based on the class-based metrics </span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> 
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"class"</span><span class="op">)</span>
+
+<span class="co"># Based on the probability-based metrics </span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="st">"Lasso"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span> <span class="op">+</span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">rand_fit</span>, <span class="st">"Random forest"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span> <span class="op">+</span>
+
+<span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="predict-new-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#predict-new-data" class="anchor"></a>Predict new data</h1>
+<p>This is just a hypothetical example. Let’s denote the new data as “new_sample_data.” (It has the data structure as the sample_data.) The <code>tidymodels</code> package provides the following functions.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Preprocessding data using the recipe created earlier </span>
+<span class="va">new_preporcessed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">new_sample_data</span><span class="op">)</span>
+
+<span class="co"># Making predictions using the best lasso model </span>
+<span class="va">new_sample_data</span><span class="op">$</span><span class="va">category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">new_preporcessed</span><span class="op">)</span><span class="op">$</span><span class="va">.pred_class</span> 
+
+<span class="co"># If you want to extract probabilities, use the following depending on whether you want to predict FALSE or TRUE values.</span>
+<span class="co"># new_sample_data$category &lt;- predict(lasso_fit, new_preporcessed, type = "prob")$.pred_FALSE.</span>
+<span class="co"># new_sample_data$category &lt;- predict(lasso_fit, new_preporcessed, type = "prob")$.pred_TRUE.</span></code></pre></div>
 </div>
   </div>
 
