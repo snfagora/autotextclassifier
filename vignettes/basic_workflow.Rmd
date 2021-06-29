@@ -102,7 +102,7 @@ c(lasso_wf, rand_wf, xg_wf) %<-% create_workflows(lasso_spec, rand_spec, xg_spec
 ```{r eval = FALSE}
 set.seed(1234)
 
-class_folds <- create_cv_folds(train_x_class, train_y_class, category)
+class_folds <- create_cv_sets(train_x_class, train_y_class, category)
 ```
 
 ## Find the best model from each algorithm
