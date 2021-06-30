@@ -4,7 +4,13 @@
 \alias{viz_class_fit}
 \title{Visualize a classification model output}
 \usage{
-viz_class_fit(model, model_title, test_x_class, test_y_class, metric_type)
+viz_class_fit(
+  model,
+  model_title,
+  test_x_class,
+  test_y_class,
+  metric_type = "class"
+)
 }
 \arguments{
 \item{model}{A classification model output}
@@ -15,7 +21,7 @@ viz_class_fit(model, model_title, test_x_class, test_y_class, metric_type)
 
 \item{test_y_class}{Predictors of the test dataset}
 
-\item{metric_type}{A type of the metrics ("class" or "probability"). Either a "class"-based metrics (e.g., accuracy, balanced accuracy, F-score) or a "probability"-based metrics (e.g., ROC Curve).}
+\item{metric_type}{A type of the metrics ("class" or "probability"). Either a "class"-based metrics (e.g., accuracy, balanced accuracy, F-score) or a "probability"-based metrics (e.g., ROC Curve). The default type is "class."}
 }
 \value{
 a bar or line plot(s)

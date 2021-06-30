@@ -7,7 +7,7 @@
 #' @param model_title A classification model name
 #' @param test_y_class Predictors of the test dataset
 #' @param test_x_class Outcomes of the test dataset
-#' @param metric_type A type of the metrics ("class" or "probability"). Either a "class"-based metrics (e.g., accuracy, balanced accuracy, F-score) or a "probability"-based metrics (e.g., ROC Curve).
+#' @param metric_type A type of the metrics ("class" or "probability"). Either a "class"-based metrics (e.g., accuracy, balanced accuracy, F-score) or a "probability"-based metrics (e.g., ROC Curve). The default type is "class."
 #' @return a bar or line plot(s)
 #' @importFrom tidyr tibble
 #' @importFrom dplyr bind_cols
@@ -29,7 +29,7 @@
 #' @export
 #'
 
-viz_class_fit <- function(model, model_title, test_x_class, test_y_class, metric_type){
+viz_class_fit <- function(model, model_title, test_x_class, test_y_class, metric_type = "class"){
 
     if (metric_type == "class") {
 

@@ -297,7 +297,6 @@ create_workflows <- function(lasso_spec, rand_spec, xg_spec, category) {
 #' @importFrom dplyr bind_cols
 #' @importFrom tidyr tibble
 #' @export
-#'
 
 create_cv_folds <- function(train_x_class, train_y_class, category){
 
