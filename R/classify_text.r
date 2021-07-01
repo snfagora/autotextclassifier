@@ -49,8 +49,6 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
       step_tokenize(text, token = "ngrams", options = list(n = 2)) %>%
       # Removed stopwords
       step_stopwords(text) %>%
-      # Remove sparse terms
-      step_nzv(all_predictors()) %>%
       # Filtered tokens
       step_tokenfilter(text, max_tokens = token_threshold) %>%
       # Normalized document length
