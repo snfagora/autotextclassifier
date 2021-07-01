@@ -71,8 +71,6 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
       step_tokenize(text, options = list(strip_punct = FALSE)) %>%
       # Removed stopwords
       step_stopwords(text) %>%
-      # Remove sparse terms
-      step_nzv(all_predictors()) %>%
       # Filtered tokens
       step_tokenfilter(text, max_tokens = 1000) %>%
       # Add word embedding
