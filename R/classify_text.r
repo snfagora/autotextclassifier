@@ -4,6 +4,7 @@
 #' @param input_data An input data.
 #' @param formula A formula that specifies the relationship between the outcome and predictor variables (e.g, \code{category} ~ \code{text}.
 #' @param text The name of the text column in the data.
+#' @param remove_sparse_terms Remove sparse terms. The default value is TRUE.
 #' @param token_threshold The maximum number of the tokens will be used in the classification.
 #' @param add_embedding Add word embedding for feature engineering. The default value is NULL. Replace NULL with TRUE, if you want to add word embedding.
 #' @param embed_dims Word embedding dimensions. The default value is 100.
@@ -22,7 +23,7 @@
 #' @importFrom textrecipes step_tfidf
 #' @export
 
-apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000, add_embedding = NULL, embed_dims = 100){
+apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000, remove_sparse_terms = TRUE, add_embedding = NULL, embed_dims = 100){
 
   if (sum(is.na(input_data$text)) != 0) {
 
@@ -71,13 +72,17 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
       step_tokenize(text, options = list(strip_punct = FALSE)) %>%
       # Removed stopwords
       step_stopwords(text) %>%
-      # Remove sparse terms
-      step_nzv(all_predictors()) %>%
       # Filtered tokens
       step_tokenfilter(text, max_tokens = 1000) %>%
       # Add word embedding
-      step_word_embeddings(text, embeddings = glove6b) %>%
-      prep()
+      step_word_embeddings(text, embeddings = glove6b)
+
+    if (remove_sparse_terms == TRUE) {
+      # Remove sparse terms
+      out <- out %>% step_nzv(all_predictors()) %>% prep()
+    } else
+
+    {out <- out %>% prep()}
 
       message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and added word embedding for feature engineering."))
 
