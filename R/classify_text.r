@@ -38,7 +38,7 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 
   message("Checked the missing values and extremely short documents.")
 
-  rec_obj <- recipe(formula, data = input_data)
+  rec_obj <- recipe(formula, input_data)
 
   message("Created the recipe object.")
 
