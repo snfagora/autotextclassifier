@@ -76,7 +76,7 @@ rec_alt <- apply_basic_recipe(sample_data, category ~ text, text, add_embedding 
 ```{r eval = FALSE}
 set.seed(1234)
 
-c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(data = sample_data, category = category, rec = rec)
+c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(input_data = sample_data, category = category, rec = rec)
 ```
 
 ## Create tuning parameters 
