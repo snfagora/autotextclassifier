@@ -14,7 +14,6 @@
 #' @importFrom recipes recipe
 #' @importFrom recipes prep
 #' @importFrom recipes all_predictors
-#' @importFrom recipes step_nzv
 #' @importFrom textdata embedding_glove6b
 #' @importFrom textrecipes step_tokenize
 #' @importFrom textrecipes step_stopwords
@@ -23,7 +22,7 @@
 #' @importFrom textrecipes step_tfidf
 #' @export
 
-apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000, remove_sparse_terms = TRUE, add_embedding = NULL, embed_dims = 100){
+apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000, add_embedding = NULL, embed_dims = 100){
 
   if (sum(is.na(input_data$text)) != 0) {
 
@@ -55,12 +54,8 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
       # Filtered tokens
       step_tokenfilter(text, max_tokens = token_threshold) %>%
       # Normalized document length
-      step_tfidf(text)
-
-    if (remove_sparse_terms == TRUE) {
-      # Remove sparse terms
-      out <- out %>% step_nzv(all_predictors()) %>% prep()
-    } else {out <- out %>% prep()}
+      step_tfidf(text) %>%
+      prep()
 
       message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and normalized the document length using TF-IDF."))
 
@@ -81,12 +76,8 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
       # Filtered tokens
       step_tokenfilter(text, max_tokens = 1000) %>%
       # Add word embedding
-      step_word_embeddings(text, embeddings = glove6b)
-
-    if (remove_sparse_terms == TRUE) {
-      # Remove sparse terms
-      out <- out %>% step_nzv(all_predictors()) %>% prep()
-    } else {out <- out %>% prep()}
+      step_word_embeddings(text, embeddings = glove6b) %>%
+      prep()
 
       message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and added word embedding for feature engineering."))
 

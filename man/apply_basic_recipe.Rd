@@ -9,7 +9,6 @@ apply_basic_recipe(
   formula,
   text,
   token_threshold = 1000,
-  remove_sparse_terms = TRUE,
   add_embedding = NULL,
   embed_dims = 100
 )
@@ -23,11 +22,11 @@ apply_basic_recipe(
 
 \item{token_threshold}{The maximum number of the tokens will be used in the classification.}
 
-\item{remove_sparse_terms}{Remove sparse terms. The default value is TRUE.}
-
 \item{add_embedding}{Add word embedding for feature engineering. The default value is NULL. Replace NULL with TRUE, if you want to add word embedding.}
 
 \item{embed_dims}{Word embedding dimensions. The default value is 100.}
+
+\item{remove_sparse_terms}{Remove sparse terms. The default value is TRUE.}
 }
 \value{
 A prep object.
