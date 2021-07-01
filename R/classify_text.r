@@ -30,7 +30,7 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 
   }
 
-  if (sum(map(sample_data$text, nchar) < 5) != 0) {
+  if (sum(map(input_data$text, nchar) < 5) != 0) {
 
     warning("The text field includes very short documents (less than 5 words).")
 
@@ -89,7 +89,7 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 
 #' Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps
 #'
-#' @param data The data to be trained and tested.
+#' @param input_data The data to be trained and tested.
 #' @param category The target binary category.
 #' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
 #' @param prop_ratio The ratio used to split the data. The default value is 0.8
@@ -103,14 +103,14 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 #' @importFrom recipes all_outcomes
 #' @export
 
-split_using_srs <- function(data, category, rec, prop_ratio = 0.8) {
+split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8) {
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
   data <- data %>% mutate(category = as.factor(category))
 
   # Split by stratified random sampling
-  split_class <- initial_split(data,
+  split_class <- initial_split(input_data,
                                strata = category,
                                prop = prop_ratio)
 
@@ -433,7 +433,7 @@ fit_best_model <- function(lasso_wf, best_lasso,
 
 #' Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data
 #'
-#' @param data The data to be trained and tested.
+#' @param input_data The data to be trained and tested.
 #' @param category The target binary category.
 #' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
 #' @param prop_ratio The ratio used to split the data. The default value is 0.8
@@ -442,10 +442,10 @@ fit_best_model <- function(lasso_wf, best_lasso,
 #' @importFrom zeallot `%<-%`
 #' @export
 
-build_pipeline <- function(data, category, rec, prop_ratio = 0.8, metric_choice = "accuracy") {
+build_pipeline <- function(input_data, category, rec, prop_ratio = 0.8, metric_choice = "accuracy") {
 
   # Split data
-  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(data = sample_data, category = category, rec = rec)
+  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(data = input_data, category = category, rec = rec)
 
   # Export these objects to the global environment
   assign("train_x_class", train_x_class, envir = globalenv())

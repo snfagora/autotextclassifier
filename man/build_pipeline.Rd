@@ -5,7 +5,7 @@
 \title{Build a pipeline from creating tuning parameters, search spaces, workflows, 10-fold cross-validation samples to finding the best model from lasso, random forest, XGBoost to fitting the best model from each algorithm to the data}
 \usage{
 build_pipeline(
-  data,
+  input_data,
   category,
   rec,
   prop_ratio = 0.8,
@@ -13,7 +13,7 @@ build_pipeline(
 )
 }
 \arguments{
-\item{data}{The data to be trained and tested.}
+\item{input_data}{The data to be trained and tested.}
 
 \item{category}{The target binary category.}
 

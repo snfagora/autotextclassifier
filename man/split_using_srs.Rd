@@ -4,10 +4,10 @@
 \alias{split_using_srs}
 \title{Creating training and testing data based on stratified random sampling (SRS) and preprocessing steps}
 \usage{
-split_using_srs(data, category, rec, prop_ratio = 0.8)
+split_using_srs(input_data, category, rec, prop_ratio = 0.8)
 }
 \arguments{
-\item{data}{The data to be trained and tested.}
+\item{input_data}{The data to be trained and tested.}
 
 \item{category}{The target binary category.}
 
