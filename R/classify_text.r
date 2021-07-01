@@ -441,7 +441,7 @@ fit_best_model <- function(lasso_wf, best_lasso,
 build_pipeline <- function(input_data, category, rec, prop_ratio = 0.8, metric_choice = "accuracy") {
 
   # Split data
-  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(data = input_data, category = category, rec = rec)
+  c(train_x_class, test_x_class, train_y_class, test_y_class) %<-% split_using_srs(input_data, category = category, rec = rec)
 
   # Export these objects to the global environment
   assign("train_x_class", train_x_class, envir = globalenv())
