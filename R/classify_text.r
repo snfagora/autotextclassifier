@@ -105,10 +105,10 @@ split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8) {
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
-  data <- data %>% mutate(category = as.factor(category))
+  data <- input_data %>% mutate(category = as.factor(category))
 
   # Split by stratified random sampling
-  split_class <- initial_split(input_data,
+  split_class <- initial_split(data,
                                strata = category,
                                prop = prop_ratio)
 
