@@ -1,3 +1,7 @@
+# autotextclassifier 0.0.5
+
+* Added missing dependencies
+
 # autotextclassifier 0.0.4
 
 * Added removing sparse terms for feature engineering 

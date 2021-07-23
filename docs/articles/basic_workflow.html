@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">autotextclassifier</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -158,7 +158,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">test_x_class</span>, <span class="va">train_y_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/split_using_srs.html">split_using_srs</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sample_data</span>, category <span class="op">=</span> <span class="va">category</span>, rec <span class="op">=</span> <span class="va">rec</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">test_x_class</span>, <span class="va">train_y_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/split_using_srs.html">split_using_srs</a></span><span class="op">(</span>input_data <span class="op">=</span> <span class="va">sample_data</span>, category <span class="op">=</span> <span class="va">category</span>, rec <span class="op">=</span> <span class="va">rec</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="create-tuning-parameters" class="section level2">
 <h2 class="hasAnchor">
