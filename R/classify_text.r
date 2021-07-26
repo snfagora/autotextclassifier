@@ -117,7 +117,7 @@ split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8, pull_id
   raw_train_class <- training(split_class)
   raw_test_class <- testing(split_class)
 
-  if (is.null(pull_id)) {
+  if (!is.null(pull_id)) {
 
     train_id <- raw_train_class %>%
       pull({{pull_id}})
