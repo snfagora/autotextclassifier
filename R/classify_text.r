@@ -89,9 +89,11 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 #' @param category The target binary category.
 #' @param rec The recipe (preprocessing steps) that will be applied to the training and test data
 #' @param prop_ratio The ratio used to split the data. The default value is 0.8
+#' @param pull_id The identifier used to identify training and test data values. The default value is `NULL.`
 #' @return A list output that contains train_x_class, test_x_class, train_y_class, test_y_class.
 #' @importFrom rsample initial_split
 #' @importFrom dplyr mutate
+#' @importFrom dplyr pull
 #' @importFrom rsample training
 #' @importFrom rsample testing
 #' @importFrom recipes bake
@@ -99,11 +101,12 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
 #' @importFrom recipes all_outcomes
 #' @export
 
-split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8) {
+split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8, pull_id = NULL) {
 
   message("If you haven't done, please use set.seed() before running this function. It helps make the data splitting process reproducible.")
 
-  input_data <- input_data %>% mutate(category = as.factor(category))
+  input_data <- input_data %>%
+    mutate(category = as.factor(category))
 
   # Split by stratified random sampling
   split_class <- initial_split(input_data,
@@ -113,6 +116,16 @@ split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8) {
   # training set
   raw_train_class <- training(split_class)
   raw_test_class <- testing(split_class)
+
+  if (is.null(pull_id)) {
+
+    train_id <- raw_train_class %>%
+      pull({{pull_id}})
+
+    test_id <- raw_test_class %>%
+      pull({{pull_id}})
+
+  }
 
   # x features (predictors)
   train_x_class <- bake(rec,
@@ -127,10 +140,21 @@ split_using_srs <- function(input_data, category, rec, prop_ratio = 0.8) {
   test_y_class <- bake(rec, raw_test_class, all_outcomes())$category
 
   # Putting together
+  if (is.null(pull_id)) {
+
   out <- list("train_x_class" = train_x_class,
               "test_x_class" = test_x_class,
               "train_y_class" = train_y_class,
-              "test_y_class" = test_y_class)
+              "test_y_class" = test_y_class) } else {
+
+  out <- list("train_x_class" = train_x_class,
+              "test_x_class" = test_x_class,
+              "train_y_class" = train_y_class,
+              "test_y_class" = test_y_class,
+              "train_id" = train_id,
+              "test_id" = test_id)
+
+              }
 
   return(out)
 
