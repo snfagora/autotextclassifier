@@ -4,7 +4,6 @@
 #' @param input_data An input data.
 #' @param formula A formula that specifies the relationship between the outcome and predictor variables (e.g, \code{category} ~ \code{text}.
 #' @param text The name of the text column in the data.
-#' @param remove_sparse_terms Remove sparse terms. The default value is TRUE.
 #' @param token_threshold The maximum number of the tokens will be used in the classification.
 #' @param add_embedding Add word embedding for feature engineering. The default value is NULL. Replace NULL with TRUE, if you want to add word embedding.
 #' @param embed_dims Word embedding dimensions. The default value is 100.

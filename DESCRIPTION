@@ -1,5 +1,5 @@
 Package: autotextclassifier
-Title: R package for automatically classifying texts based on tidymodels
+Title: R Package for Automatically Classifying Texts Based on Tidymodels
 Version: 0.0.5
 Authors@R: 
     c(person(given = "Jae Yeon",
@@ -11,7 +11,7 @@ Authors@R:
            family = "de Vries",
            role = c("aut"),
            email = "milandv@jhu.edu"))
-Description: This package automatically classifies texts based on a binary category using lasso, random forest, and XGboost algorithms. The package is built on the tidymodels framework.
+Description: A suite of functions that automatically classifies documents based on a binary category using lasso, random forest, and XGboost algorithms. The package is built on the tidymodels framework.
 Maintainer: Jae Yeon Kim <jkim638@jhu.edu>
 BugReports: https://github.com/snfagora/autotextclassifier/issues
 License: MIT + file LICENSE
