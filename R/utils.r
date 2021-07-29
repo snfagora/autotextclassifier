@@ -29,39 +29,40 @@
 #' @export
 #'
 
-viz_class_fit <- function(model, model_title, test_x_class, test_y_class, metric_type = "class"){
+viz_class_fit <- function(model, model_title, test_x_class, test_y_class, metric_type = "class") {
+  if (metric_type == "class") {
+    metrics <- yardstick::metric_set(accuracy, bal_accuracy, f_meas)
 
-    if (metric_type == "class") {
+    out <- tibble(
+      truth = test_y_class,
+      predicted = predict(model, test_x_class)$.pred_class
+    ) %>%
+      metrics(truth = truth, estimate = predicted) %>%
+      ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
+      geom_col() +
+      labs(
+        x = "Metrics",
+        y = "Estimate"
+      ) +
+      ylim(c(0, 1)) +
+      geom_text(aes(label = round(.estimate, 2)),
+        color = "red"
+      ) +
+      labs(title = model_title)
+  }
 
-        metrics <- yardstick::metric_set(accuracy, bal_accuracy, f_meas)
+  if (metric_type == "probability") {
+    metrics <- yardstick::metric_set(roc_auc)
 
-        out <- tibble(truth = test_y_class,
-               predicted = predict(model, test_x_class)$.pred_class) %>%
-            metrics(truth = truth, estimate = predicted) %>%
-            ggplot(aes(x = glue("{toupper(.metric)}"), y = .estimate)) +
-            geom_col() +
-            labs(x = "Metrics",
-                 y = "Estimate") +
-            ylim(c(0,1)) +
-            geom_text(aes(label = round(.estimate, 2)),
-                      color = "red") +
-            labs(title = model_title)
+    out <- tibble(
+      truth = test_y_class,
+      Class1 = predict(model, test_x_class, type = "prob")$.pred_FALSE.
+    ) %>%
+      roc_curve(truth, Class1) %>%
+      autoplot()
+  }
 
-    }
-
-    if (metric_type == "probability") {
-
-        metrics <- yardstick::metric_set(roc_auc)
-
-        out <- tibble(truth = test_y_class,
-               Class1 = predict(model, test_x_class, type = "prob")$.pred_FALSE.) %>%
-               roc_curve(truth, Class1) %>%
-               autoplot()
-
-    }
-
-    return(out)
-
+  return(out)
 }
 
 # The following function is adapted from https://juliasilge.com/blog/animal-crossing/
@@ -82,18 +83,18 @@ viz_class_fit <- function(model, model_title, test_x_class, test_y_class, metric
 #' @export
 
 topn_vip <- function(model) {
-    model %>%
-        top_n(20, wt = abs(Importance)) %>%
-        ungroup() %>%
-        mutate(
-            Importance = abs(Importance),
-            Variable = str_remove(Variable, "tfidf_text_"),
-            # str_remove only removed one of the two `
-            Variable = gsub("`", "", Variable),
-            Variable = fct_reorder(Variable, Importance)
-        ) %>%
-        ggplot(aes(x = Importance, y = Variable)) +
-            geom_col(show.legend = FALSE) +
-            labs(y = NULL) +
-            theme(text = element_text(size = 20))
+  model %>%
+    top_n(20, wt = abs(Importance)) %>%
+    ungroup() %>%
+    mutate(
+      Importance = abs(Importance),
+      Variable = str_remove(Variable, "tfidf_text_"),
+      # str_remove only removed one of the two `
+      Variable = gsub("`", "", Variable),
+      Variable = fct_reorder(Variable, Importance)
+    ) %>%
+    ggplot(aes(x = Importance, y = Variable)) +
+    geom_col(show.legend = FALSE) +
+    labs(y = NULL) +
+    theme(text = element_text(size = 20))
 }
