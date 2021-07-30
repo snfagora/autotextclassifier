@@ -25,8 +25,6 @@ apply_basic_recipe(
 \item{add_embedding}{Add word embedding for feature engineering. The default value is NULL. Replace NULL with TRUE, if you want to add word embedding.}
 
 \item{embed_dims}{Word embedding dimensions. The default value is 100.}
-
-\item{remove_sparse_terms}{Remove sparse terms. The default value is TRUE.}
 }
 \value{
 A prep object.
