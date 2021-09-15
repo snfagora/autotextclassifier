@@ -1,3 +1,32 @@
+#' Evaluate a classification model output
+#'
+#' @param model A classification model output
+#' @param test_y_class Predictors of the test dataset
+#' @param test_x_class Outcomes of the test dataset
+#' @return a dataframe of three columns `(.metric, .estimator, .estimate)`
+#' @importFrom tidyr tibble
+#' @importFrom yardstick metrics
+#' @importFrom yardstick metric_set
+#' @importFrom yardstick roc_auc
+#' @importFrom yardstick accuracy
+#' @importFrom yardstick bal_accuracy
+#' @importFrom yardstick f_meas
+#' @importFrom stats predict
+#' @export
+#'
+cal_class_fit <- function(model, test_x_class, test_y_class) {
+
+  # Evaluation
+  metrics <- metric_set(accuracy, bal_accuracy, f_meas)
+
+  out <- tibble(
+    truth = test_y_class,
+    predicted = predict(model, test_x_class)$.pred_class
+  ) %>%
+    metrics(truth = truth, estimate = predicted)
+
+  return(out)
+}
 
 # The following visualization code draws on [Diego Usai's medium post](https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c).
 
