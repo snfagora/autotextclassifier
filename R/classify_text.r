@@ -61,13 +61,11 @@ apply_basic_recipe <- function(input_data, formula, text, token_threshold = 1000
       step_tokenize(text, options = list(strip_punct = FALSE)) %>%
       # Removed stopwords
       step_stopwords(text) %>%
-      # Filtered tokens
-      step_tokenfilter(text, max_tokens = token_threshold) %>%
       # Add word embedding
       step_word_embeddings(text, embeddings = glove6b) %>%
       prep()
 
-    message(glue("Tokenized, removed stopd words, filtered up to the max_tokens = {token_threshold}, and added word embedding for feature engineering."))
+    message(glue("Tokenized, removed stopd words, and added word embedding for feature engineering."))
   }
 
   return(out)
