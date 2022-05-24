@@ -17,12 +17,7 @@ if(!require(devtools)) install.packages("devtools")
 devtools::install_github("snfagora/autotextclassifier")
 ```
 
-## Example
+## Vignettes
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(autotextclassifier)
-## basic example code
-```
-
+- Basic workflow: https://snfagora.github.io/autotextclassifier/articles/basic_workflow.html
+- Build a pipeline: https://snfagora.github.io/autotextclassifier/articles/build_pipeline.html 
