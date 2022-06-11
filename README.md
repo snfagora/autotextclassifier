@@ -5,7 +5,7 @@
 [![R-CMD-check](https://github.com/snfagora/autotextclassifier/workflows/R-CMD-check/badge.svg)](https://github.com/snfagora/autotextclassifier/actions)
 <!-- badges: end -->
 
-The goal of autotextclassifier is to ...
+The goal of autotextclassifier is to automatically classifying texts based on tidymodels.
 
 ## Installation
 

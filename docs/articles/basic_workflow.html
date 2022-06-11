@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">autotextclassifier</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,7 +63,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/snfagora/autotextclassifier/">
+  <a href="https://github.com/snfagora/autotextclassifier/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -82,50 +78,53 @@
 
       
 
-      </header><script src="basic_workflow_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Basic workflow</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/snfagora/autotextclassifier/blob/master/vignettes/basic_workflow.Rmd"><code>vignettes/basic_workflow.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/snfagora/autotextclassifier/blob/HEAD/vignettes/basic_workflow.Rmd" class="external-link"><code>vignettes/basic_workflow.Rmd</code></a></small>
       <div class="hidden name"><code>basic_workflow.Rmd</code></div>
 
     </div>
 
     
     
-<div id="load-libraries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-libraries" class="anchor"></a>Load libraries</h2>
+<div class="section level3">
+<h3 id="load-libraries">Load libraries<a class="anchor" aria-label="anchor" href="#load-libraries"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">autotextclassifier</span><span class="op">)</span> <span class="co"># Auto text classifier </span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span> <span class="co"># Parallel processing </span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span> <span class="co"># Parallel processing </span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span> <span class="co"># Creating reproducible file paths </span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span> <span class="co"># Putting ggplots together</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes">recipes</a></span><span class="op">)</span> <span class="co"># Preprocessing </span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nteetor/zeallot">zeallot</a></span><span class="op">)</span> <span class="co"># Multiple assignments </span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/yardstick">yardstick</a></span><span class="op">)</span> <span class="co"># Metrics  </span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">autotextclassifier</span><span class="op">)</span> <span class="co"># Auto text classifier </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span> <span class="co"># Parallel processing </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span> <span class="co"># Parallel processing </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/" class="external-link">here</a></span><span class="op">)</span> <span class="co"># Creating reproducible file paths </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span> <span class="co"># Putting ggplots together</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes" class="external-link">recipes</a></span><span class="op">)</span> <span class="co"># Preprocessing </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nteetor/zeallot" class="external-link">zeallot</a></span><span class="op">)</span> <span class="co"># Multiple assignments </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/yardstick" class="external-link">yardstick</a></span><span class="op">)</span> <span class="co"># Metrics  </span></code></pre></div>
 </div>
-<div id="import-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#import-data" class="anchor"></a>Import data</h2>
+<div class="section level3">
+<h3 id="import-data">Import data<a class="anchor" aria-label="anchor" href="#import-data"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"inst/extdata/sample_data.rda"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"inst/extdata/sample_data.rda"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="data-munging" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-munging" class="anchor"></a>Data munging</h2>
-<p>Don’t forget to make sure that the type of the outcome variable should be factor.</p>
+<div class="section level3">
+<h3 id="data-munging">Data munging<a class="anchor" aria-label="anchor" href="#data-munging"></a>
+</h3>
+<p>Don’t forget to make sure that the type of the outcome variable
+should be factor.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sample_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"category"</span>, <span class="st">"org_name"</span>, <span class="st">"ein"</span>, <span class="st">"text"</span><span class="op">)</span>
-<span class="va">sample_data</span><span class="op">$</span><span class="va">category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">sample_data</span><span class="op">$</span><span class="va">category</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sample_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"category"</span>, <span class="st">"org_name"</span>, <span class="st">"ein"</span>, <span class="st">"text"</span><span class="op">)</span>
+<span class="va">sample_data</span><span class="op">$</span><span class="va">category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">sample_data</span><span class="op">$</span><span class="va">category</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="apply-basic-recipe" class="section level2">
-<h2 class="hasAnchor">
-<a href="#apply-basic-recipe" class="anchor"></a>Apply basic recipe</h2>
-<p>The <code>rec</code> object provides the following information. The function also checks whether the <code>text</code> column has missing values or includes extremely short documents (less than five words).</p>
+<div class="section level3">
+<h3 id="apply-basic-recipe">Apply basic recipe<a class="anchor" aria-label="anchor" href="#apply-basic-recipe"></a>
+</h3>
+<p>The <code>rec</code> object provides the following information. The
+function also checks whether the <code>text</code> column has missing
+values or includes extremely short documents (less than five words).</p>
 <p>There are two broad basic options for text preprocessing.</p>
 <ol style="list-style-type: decimal">
 <li>Without word embedding</li>
@@ -152,64 +151,67 @@
 <span class="co"># With word embedding </span>
 <span class="va">rec_alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/apply_basic_recipe.html">apply_basic_recipe</a></span><span class="op">(</span><span class="va">sample_data</span>, <span class="va">category</span> <span class="op">~</span> <span class="va">text</span>, <span class="va">text</span>, add_embedding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="split-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#split-data" class="anchor"></a>Split data</h2>
+<div class="section level3">
+<h3 id="split-data">Split data<a class="anchor" aria-label="anchor" href="#split-data"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">test_x_class</span>, <span class="va">train_y_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/split_using_srs.html">split_using_srs</a></span><span class="op">(</span>input_data <span class="op">=</span> <span class="va">sample_data</span>, category <span class="op">=</span> <span class="va">category</span>, rec <span class="op">=</span> <span class="va">rec</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">test_x_class</span>, <span class="va">train_y_class</span>, <span class="va">test_y_class</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span> <span class="fu"><a href="../reference/split_using_srs.html">split_using_srs</a></span><span class="op">(</span>input_data <span class="op">=</span> <span class="va">sample_data</span>, category <span class="op">=</span> <span class="va">category</span>, rec <span class="op">=</span> <span class="va">rec</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="create-tuning-parameters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-tuning-parameters" class="anchor"></a>Create tuning parameters</h2>
+<div class="section level3">
+<h3 id="create-tuning-parameters">Create tuning parameters<a class="anchor" aria-label="anchor" href="#create-tuning-parameters"></a>
+</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/create_tunes.html">create_tunes</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span> <span class="fu"><a href="../reference/create_tunes.html">create_tunes</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="create-search-spaces" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-search-spaces" class="anchor"></a>Create search spaces</h2>
+<div class="section level3">
+<h3 id="create-search-spaces">Create search spaces<a class="anchor" aria-label="anchor" href="#create-search-spaces"></a>
+</h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/create_search_spaces.html">create_search_spaces</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">category</span>, <span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span> <span class="fu"><a href="../reference/create_search_spaces.html">create_search_spaces</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">category</span>, <span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="create-workflows" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-workflows" class="anchor"></a>Create workflows</h2>
+<div class="section level3">
+<h3 id="create-workflows">Create workflows<a class="anchor" aria-label="anchor" href="#create-workflows"></a>
+</h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">rand_wf</span>, <span class="va">xg_wf</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/create_workflows.html">create_workflows</a></span><span class="op">(</span><span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span>, <span class="va">category</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">rand_wf</span>, <span class="va">xg_wf</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span> <span class="fu"><a href="../reference/create_workflows.html">create_workflows</a></span><span class="op">(</span><span class="va">lasso_spec</span>, <span class="va">rand_spec</span>, <span class="va">xg_spec</span>, <span class="va">category</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="create-10-fold-cross-validation-samples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-10-fold-cross-validation-samples" class="anchor"></a>Create 10-fold cross-validation samples</h2>
+<div class="section level3">
+<h3 id="create-10-fold-cross-validation-samples">Create 10-fold cross-validation samples<a class="anchor" aria-label="anchor" href="#create-10-fold-cross-validation-samples"></a>
+</h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
 
 <span class="va">class_folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_cv_folds.html">create_cv_folds</a></span><span class="op">(</span><span class="va">train_x_class</span>, <span class="va">train_y_class</span>, <span class="va">category</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="find-the-best-model-from-each-algorithm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#find-the-best-model-from-each-algorithm" class="anchor"></a>Find the best model from each algorithm</h2>
+<div class="section level3">
+<h3 id="find-the-best-model-from-each-algorithm">Find the best model from each algorithm<a class="anchor" aria-label="anchor" href="#find-the-best-model-from-each-algorithm"></a>
+</h3>
 <p>Consider using parallel processing to speed up.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">all_cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">all_cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="va">all_cores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="va">all_cores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
-<p>The default metric for model evaluation is accuracy. The other options are balanced accuracy (bal_accuracy), F-score (f_means), and Area under the ROC curve (roc_auc).</p>
+<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
+<p>The default metric for model evaluation is accuracy. The other
+options are balanced accuracy (bal_accuracy), F-score (f_means), and
+Area under the ROC curve (roc_auc).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">best_lasso</span>, <span class="va">best_rand</span>, <span class="va">best_xg</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/find_best_model.html">find_best_model</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">rand_wf</span>, <span class="va">xg_wf</span>, <span class="va">class_folds</span>, <span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span>, metric_choice <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">best_lasso</span>, <span class="va">best_rand</span>, <span class="va">best_xg</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span> <span class="fu"><a href="../reference/find_best_model.html">find_best_model</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">rand_wf</span>, <span class="va">xg_wf</span>, <span class="va">class_folds</span>, <span class="va">lasso_grid</span>, <span class="va">rand_grid</span>, <span class="va">xg_grid</span>, metric_choice <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="fit-the-best-model-from-each-algorithm-to-the-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-the-best-model-from-each-algorithm-to-the-data" class="anchor"></a>Fit the best model from each algorithm to the data</h2>
-<p>This step would take the longest running time. We recommend saving this output as an RData object somewhere.</p>
+<div class="section level3">
+<h3 id="fit-the-best-model-from-each-algorithm-to-the-data">Fit the best model from each algorithm to the data<a class="anchor" aria-label="anchor" href="#fit-the-best-model-from-each-algorithm-to-the-data"></a>
+</h3>
+<p>This step would take the longest running time. We recommend saving
+this output as an RData object somewhere.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">rand_fit</span>, <span class="va">xg_fit</span><span class="op">)</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="../reference/fit_best_model.html">fit_best_model</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">best_lasso</span>, <span class="va">rand_wf</span>, <span class="va">best_rand</span>, <span class="va">xg_wf</span>, <span class="va">best_xg</span>, <span class="va">train_x_class</span>, <span class="va">train_y_class</span>, <span class="va">category</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">rand_fit</span>, <span class="va">xg_fit</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span> <span class="fu"><a href="../reference/fit_best_model.html">fit_best_model</a></span><span class="op">(</span><span class="va">lasso_wf</span>, <span class="va">best_lasso</span>, <span class="va">rand_wf</span>, <span class="va">best_rand</span>, <span class="va">xg_wf</span>, <span class="va">best_xg</span>, <span class="va">train_x_class</span>, <span class="va">train_y_class</span>, <span class="va">category</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="evaluate-the-model-using-visualization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#evaluate-the-model-using-visualization" class="anchor"></a>Evaluate the model using visualization</h2>
+<div class="section level3">
+<h3 id="evaluate-the-model-using-visualization">Evaluate the model using visualization<a class="anchor" aria-label="anchor" href="#evaluate-the-model-using-visualization"></a>
+</h3>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Based on the class-based metrics </span>
 
@@ -227,16 +229,18 @@
 
 <span class="fu"><a href="../reference/viz_class_fit.html">viz_class_fit</a></span><span class="op">(</span><span class="va">xg_fit</span>, <span class="st">"XGBoost"</span>, <span class="va">test_x_class</span>, <span class="va">test_y_class</span>, <span class="st">"probability"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="predict-new-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#predict-new-data" class="anchor"></a>Predict new data</h1>
-<p>This is just a hypothetical example. Let’s denote the new data as “new_sample_data.” (It has the data structure as the sample_data.) The <code>tidymodels</code> package provides the following functions.</p>
+<div class="section level2">
+<h2 id="predict-new-data">Predict new data<a class="anchor" aria-label="anchor" href="#predict-new-data"></a>
+</h2>
+<p>This is just a hypothetical example. Let’s denote the new data as
+“new_sample_data.” (It has the data structure as the sample_data.) The
+<code>tidymodels</code> package provides the following functions.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Preprocessding data using the recipe created earlier </span>
-<span class="va">new_preporcessed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">new_sample_data</span><span class="op">)</span>
+<span class="va">new_preporcessed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">new_sample_data</span><span class="op">)</span>
 
 <span class="co"># Making predictions using the best lasso model </span>
-<span class="va">new_sample_data</span><span class="op">$</span><span class="va">category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">new_preporcessed</span><span class="op">)</span><span class="op">$</span><span class="va">.pred_class</span> 
+<span class="va">new_sample_data</span><span class="op">$</span><span class="va">category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">lasso_fit</span>, <span class="va">new_preporcessed</span><span class="op">)</span><span class="op">$</span><span class="va">.pred_class</span> 
 
 <span class="co"># If you want to extract probabilities, use the following depending on whether you want to predict FALSE or TRUE values.</span>
 <span class="co"># new_sample_data$category &lt;- predict(lasso_fit, new_preporcessed, type = "prob")$.pred_FALSE.</span>
@@ -255,11 +259,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jae Yeon Kim, Milan de Vries.</p>
+  <p></p>
+<p>Developed by Jae Yeon Kim, Milan de Vries.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -267,6 +273,8 @@
 
   
 
+
+  
 
   </body>
 </html>
